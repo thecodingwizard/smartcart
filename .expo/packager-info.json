@@ -3,8 +3,8 @@
   "expoServerPort": null,
   "packagerPort": null,
   "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null,
+  "expoServerNgrokUrl": "https://8c-6ax.anonymous.smartcart.exp.direct",
+  "packagerNgrokUrl": "https://packager.8c-6ax.anonymous.smartcart.exp.direct",
+  "ngrokPid": 43768,
   "webpackServerPort": null
 }
