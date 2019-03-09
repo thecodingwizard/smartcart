@@ -1,0 +1,10 @@
+{
+  "devToolsPort": 19002,
+  "expoServerPort": 19000,
+  "packagerPort": 19001,
+  "packagerPid": 7304,
+  "expoServerNgrokUrl": "https://hk-vu8.anonymous.smart-cart.exp.direct",
+  "packagerNgrokUrl": "https://packager.hk-vu8.anonymous.smart-cart.exp.direct",
+  "ngrokPid": 4960,
+  "webpackServerPort": null
+}
