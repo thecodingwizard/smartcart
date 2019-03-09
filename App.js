@@ -22,7 +22,8 @@ export default class App extends React.Component {
           </View>
 
           <Route exact path="/" component={Home} />
-          <Route path="/scan" component={Scan} />
+          <Route path="/scan" component={ScanItem} />
+          <Route component={Home} />
         </View>
       </NativeRouter>
     );
