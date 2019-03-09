@@ -7,6 +7,7 @@ import { NativeRouter, Route, Switch, Link } from 'react-router-native';
 import Home from './src/containers/Home';
 import ScanItem from './src/containers/scan-item/ScanItem';
 import ViewList from './src/containers/view-item/ViewList';
+import PostReview from "./src/containers/post-review/PostReview";
 
 export default class App extends React.Component {
   render() {
@@ -19,6 +20,9 @@ export default class App extends React.Component {
             </Link>
             <Link to="/scan" underlayColor="#f0f4f7" style={styles.navItem}>
               <Text>Scan</Text>
+            </Link>
+            <Link to="/post-review/00430999" underlayColor="#f0f4f7" style={styles.navItem}>
+              <Text>Post Review</Text>
             </Link>
             <Link to="/view-list" underlayColor="#f0f4f7" style={styles.navItem}>
               <Text>View list</Text>
