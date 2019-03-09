@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { registerRootComponent } from 'expo';
 
-import { NativeRouter, Route, Link } from 'react-router-native';
+import { NativeRouter, Route, Switch, Link } from 'react-router-native';
 
 import Home from './src/containers/Home';
 import ScanItem from './src/containers/scan-item/ScanItem';
+import ViewList from './src/containers/view-item/ViewList';
 
 export default class App extends React.Component {
   render() {
@@ -19,11 +20,17 @@ export default class App extends React.Component {
             <Link to="/scan" underlayColor="#f0f4f7" style={styles.navItem}>
               <Text>Scan</Text>
             </Link>
+            <Link to="/view-list" underlayColor="#f0f4f7" style={styles.navItem}>
+              <Text>View list</Text>
+            </Link>
           </View>
 
-          <Route exact path="/" component={Home} />
-          <Route path="/scan" component={ScanItem} />
-          <Route component={Home} />
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route path="/scan" component={ScanItem} />
+            <Route path="/view-list" component={ViewList} />
+            <Route render={() => <Text>page not found</Text>} />
+          </Switch>
         </View>
       </NativeRouter>
     );

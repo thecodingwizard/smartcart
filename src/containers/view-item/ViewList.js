@@ -1,12 +1,11 @@
-
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-export default class ScanItem extends React.Component {
+export default class ViewList extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>scannn</Text>
+        <Text>view list</Text>
       </View>
     );
   }
