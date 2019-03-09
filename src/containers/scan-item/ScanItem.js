@@ -11,7 +11,6 @@ export default class ScanItem extends React.Component {
         <Reader
           history={this.props.history}
         />
-        <Text>after</Text>
       </View>
     );
   }
@@ -38,12 +37,10 @@ class Reader extends React.Component {
     }
     return (
       <View >
-        <Text>inner before</Text>
         <BarCodeScanner
           onBarCodeScanned={this.handleBarCodeScanned}
           style={{...StyleSheet.absoluteFill, ...styles.barcodeScanner}}
         />
-        <Text>inner after</Text>
       </View>
     );
   }
