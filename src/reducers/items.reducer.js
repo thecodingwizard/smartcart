@@ -2,7 +2,6 @@ import * as fromActions from "../actions/items.actions";
 
 const initialState = {
   itemDetails: null,
-  itemReviews: null,
   loading: false,
   error: null,
   notFound: false,
@@ -50,24 +49,6 @@ const itemsReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-      };
-    case fromActions.GET_ITEM_REVIEWS:
-      return {
-        ...state,
-        loading: true,
-      };
-    case fromActions.GET_ITEM_REVIEWS_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        error: null,
-        itemReviews: action.reviews
-      };
-    case fromActions.GET_ITEM_REVIEWS_FAIL:
-      return {
-        ...state,
-        loading: false,
-        error: action.error
       };
     default: {
       return state;
