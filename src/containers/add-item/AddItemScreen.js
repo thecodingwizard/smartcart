@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Button, StyleSheet, TextInput, View } from "react-native";
+import { Button, StyleSheet, TextInput, View, Text } from "react-native";
 import { ImagePicker, Permissions } from "expo";
 
 import { CheckBox, Divider } from "react-native-elements";
@@ -22,6 +22,18 @@ class AddItemScreen extends Component {
     nutritionName: "",
     nutritionAmount: "",
     indented: false,
+    nMap:{
+      calories:null,
+      totalFat:null,
+      saturatedFat:null,
+      transFat: null,
+      cholesterol: null,
+      sodium: null,
+      totalCarbohydrate: null,
+      dietaryFiber: null,
+      sugars: null,
+      protein: null,
+    },
   };
 
   static navigationOptions = {
@@ -39,15 +51,59 @@ class AddItemScreen extends Component {
   };
   updateImageSelected = image => {
     this.setState(state => ({ ...state, image }));
+    let formData = new FormData();
+    formData.append("image", image);
+    fetch('http://35.235.77.103:8000/nutritionExtract/', {
+      method: 'POST',
+      body: formData
+    }).then(function(response) {
+      return response.json();
+    }).then((data) => {
+      this.autofill(data);
+    })
+      .catch((e) => {
+        setActivityIndicatorVisible(false);
+        console.log(e)
+      });
+
   };
+  toString = el => {
+    if (Array.isArray(el)) {
+      return el.join("");
+    } else {
+      return el + "";
+    }
+  }
+
+  setActivityIndicatorVisible = status => {
+    if (status) {
+      // show
+    } else {
+      // hide
+    }
+  }
+
+  autofill = data =>  {
+    setActivityIndicatorVisible(false);
+    console.log(data);
+    this.state.nMap = {
+      calories:data["Calories"] ? this.toString(data["Calories"]) : "",
+      totalFat:data["Total Fat"] ? this.toString(data["Total Fat"]) : "",
+      saturatedFat:data["Saturated Fat"] ? this.toString(data["Saturated Fat"]) : "",
+      transFat: data["Trans Fat"] ? this.toString(data["Trans Fat"]) : "",
+      cholesterol: data["Cholesterol"] ? this.toString(data["Cholesterol"]) : "",
+      sodium: data["Sodium"] ? this.toString(data["Sodium"]) : "",
+      totalCarbohydrate: data["Total Carbohydrate"] ? this.toString(data["Total Carbohydrate"]) : "",
+      dietaryFiber: data["Dietary Fiber"] ? this.toString(data["Dietary Fiber"]) : "",
+      sugars: data["Sugars"] ? this.toString(data["Sugars"]) : "",
+      protein: data["Protein"] ? this.toString(data["Protein"]) : "",
+    };
+  }
 
   updateIngredients = ingredients => {
     this.setState({ ingredients });
   };
 
-  sendToFirebase(data) {
-    
-  }
 
   addItem = (upc) => {
     if (this.state.name.length <= 0) {
@@ -72,16 +128,6 @@ class AddItemScreen extends Component {
 
     if (this.state.nameError || this.state.categoryError || this.state.storeError) return;
 
-    console.log(this.state.image);
-    let formData = new FormData();
-    formData.append("image", this.state.image);
-    fetch('http://35.235.77.103:8000/nutritionExtract/', {
-      method: 'POST',
-      body: formData
-    }).then(function(response) {
-      return response.json();
-    }).then((data) => {this.sendToFirebase(data)})
-    .catch((e) => console.log(e));
 
     this.props.dispatch(addItem({
       // TODO: rating
@@ -89,7 +135,8 @@ class AddItemScreen extends Component {
       name: this.state.name,
       category: this.state.category,
       store: this.state.store,
-      rating: 4.32
+      rating: 4.32,
+      nMap: this.state.nMap,
     }));
 
 
@@ -143,29 +190,116 @@ class AddItemScreen extends Component {
 
         <Divider/>
         <View style={{ ...styles.nutritionFacts }}>
-          <NutritionFacts nutritions={this.state.nutritions}/>
+          <NutritionFacts nutritions={[/* Nothing (intentional) */]}/>
           <View style={{ flexDirection: "row" }}>
+            <Text
+              style={{ ...styles.nutritionInput }}>
+              Calories
+            </Text>
             <TextInput
-              placeholder="Category"
               style={{ ...styles.nutritionInput }}
-              value={this.state.nutritionName}
-              onChangeText={category => this.setState({ nutritionName: category })}/>
+              placeholder={"Calories"}
+              value={this.state.nMap.calories}
+              onChangeText={amount => this.setState(state => ({ ...state, nMap:{ ...state.nMap, calories: amount}}))}/>
+          </View>
+          <View style={{ flexDirection: "row" }}>
+            <Text
+              style={{ ...styles.nutritionInput }}>
+              Total Fat
+            </Text>
             <TextInput
-              placeholder="Amount"
               style={{ ...styles.nutritionInput }}
-              value={this.state.nutritionAmount}
-              onChangeText={amount => this.setState({ nutritionAmount: amount })}/>
+              placeholder={"Total Fat"}
+              value={this.state.nMap.totalFat}
+              onChangeText={amount => this.setState(state => ({ ...state, nMap:{ ...state.nMap, totalFat: amount}}))}/>
           </View>
-          <View>
-            <CheckBox
-              title="Indented"
-              checked={this.state.indented}
-              onPress={() => this.setState(state => ({ indented: !state.indented }))}/>
+          <View style={{ flexDirection: "row" }}>
+            <Text
+              style={{ ...styles.nutritionInput }}>
+              &nbsp;&nbsp;&nbsp;&nbsp;Saturated Fat
+            </Text>
+            <TextInput
+              style={{ ...styles.nutritionInput }}
+              placeholder={"Saturated Fat"}
+              value={this.state.nMap.saturatedFat}
+              onChangeText={amount => this.setState(state => ({ ...state, nMap:{ ...state.nMap, saturatedFat: amount}}))}/>
           </View>
-          <View style={{ flexDirection: "row", justifyContent: "center" }}>
-            {/*//This button used to call 'addNutritionField', but that's gone now? Putting placeholder for now*/}
-            <Button title="Add Field" onPress={() => {
-            }}/>
+          <View style={{ flexDirection: "row" }}>
+            <Text
+              style={{ ...styles.nutritionInput }}>
+              &nbsp;&nbsp;&nbsp;&nbsp;Trans Fat
+            </Text>
+            <TextInput
+              style={{ ...styles.nutritionInput }}
+              placeholder={"Trans Fat"}
+              value={this.state.nMap.transFat}
+              onChangeText={amount => this.setState(state => ({ ...state, nMap:{ ...state.nMap, transFat: amount}}))}/>
+          </View>
+          <View style={{ flexDirection: "row" }}>
+            <Text
+              style={{ ...styles.nutritionInput }}>
+              Cholesterol
+            </Text>
+            <TextInput
+              style={{ ...styles.nutritionInput }}
+              placeholder={"Cholesterol"}
+              value={this.state.nMap.cholesterol}
+              onChangeText={amount => this.setState(state => ({ ...state, nMap:{ ...state.nMap, cholesterol: amount}}))}/>
+          </View>
+          <View style={{ flexDirection: "row" }}>
+            <Text
+              style={{ ...styles.nutritionInput }}>
+              Sodium
+            </Text>
+            <TextInput
+              style={{ ...styles.nutritionInput }}
+              placeholder={"Sodium"}
+              value={this.state.nMap.sodium}
+              onChangeText={amount => this.setState(state => ({ ...state, nMap:{ ...state.nMap, sodium: amount}}))}/>
+          </View>
+          <View style={{ flexDirection: "row" }}>
+            <Text
+              style={{ ...styles.nutritionInput }}>
+              Total Carbohydrate
+            </Text>
+            <TextInput
+              style={{ ...styles.nutritionInput }}
+              placeholder={"Total Carbohydrate"}
+              value={this.state.nMap.totalCarbohydrate}
+              onChangeText={amount => this.setState(state => ({ ...state, nMap:{ ...state.nMap, totalCarbohydrate: amount}}))}/>
+          </View>
+          <View style={{ flexDirection: "row" }}>
+            <Text
+              style={{ ...styles.nutritionInput }}>
+              &nbsp;&nbsp;&nbsp;&nbsp;Dietary Fiber
+            </Text>
+            <TextInput
+              style={{ ...styles.nutritionInput }}
+              placeholder={"Dietary Fiber"}
+              value={this.state.nMap.dietaryFiber}
+              onChangeText={amount => this.setState(state => ({ ...state, nMap:{ ...state.nMap, dietaryFiber: amount}}))}/>
+          </View>
+          <View style={{ flexDirection: "row" }}>
+            <Text
+              style={{ ...styles.nutritionInput }}>
+              &nbsp;&nbsp;&nbsp;&nbsp;Sugars
+            </Text>
+            <TextInput
+              style={{ ...styles.nutritionInput }}
+              placeholder={"Sugars"}
+              value={this.state.nMap.sugars}
+              onChangeText={amount => this.setState(state => ({ ...state, nMap:{ ...state.nMap, sugars: amount}}))}/>
+          </View>
+          <View style={{ flexDirection: "row" }}>
+            <Text
+              style={{ ...styles.nutritionInput }}>
+              Protein
+            </Text>
+            <TextInput
+              style={{ ...styles.nutritionInput }}
+              placeholder={"Protein"}
+              value={this.state.nMap.protein}
+              onChangeText={amount => this.setState(state => ({ ...state, nMap:{ ...state.nMap, protein: amount}}))}/>
           </View>
         </View>
         <Divider/>
@@ -208,7 +342,7 @@ class Picker extends React.Component {
     return (
       <View style={{ alignItems: "center", justifyContent: "center" }}>
         <Button
-          title={(this.state.image ? "change" : "take") + " nutrition facts label photo "}
+          title={("autofill nutrition facts with photo ")}
           onPress={this._pickImage}
         />
       </View>
@@ -222,6 +356,7 @@ class Picker extends React.Component {
 
     if (!result.cancelled) {
       this.setState({ image: result.uri });
+      setActivityIndicatorVisible(true);
       this.props.onImageSelected(result.base64);
     }
   };
