@@ -1,11 +1,23 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, TextInput, Slider } from 'react-native';
+import {
+  StyleSheet,
+  Button,
+  View,
+  Text,
+  TextInput,
+  Slider,
+} from 'react-native';
+import { Rating, AirbnbRating } from 'react-native-elements';
 
 export default class PostReview extends Component {
   state = {
     name: '',
     price: 0,
     review: 0,
+  };
+
+  static navigationOptions = {
+    title: 'Add Review',
   };
 
   updateName = name => {
@@ -18,11 +30,19 @@ export default class PostReview extends Component {
     this.setState(state => ({ ...state, review }));
   };
 
+  addReview = () => {
+    // add review to firebase
+    alert(`Added review of ${this.state.name} with price of $${this.state.price} and a review of ${this.state.review}/5`)
+
+    // navigate back to home
+    this.props.navigation.navigate('Home');
+  };
+
   render() {
-    const upc = this.props.match.params.upc;
+    const upc = this.props.navigation.state.params.upc;
     return (
       <View style={styles.container}>
-        <Text>Hello from Post Review! UPC code is {upc}</Text>
+        <Text style={styles.title}>UPC code: {upc}</Text>
         <TextInput
           style={styles.input}
           placeholder="Item name"
@@ -34,18 +54,13 @@ export default class PostReview extends Component {
           keyboardType="decimal-pad"
           onChangeText={this.updatePrice}
         />
-        <Text style={styles.label}>Review: {this.state.review}/5</Text>
-        <Slider
-          style={styles.slider}
-          step={0.5}
-          minimumValue={0}
-          maximumValue={5}
-          value={this.state.age}
-          onValueChange={this.updateReview}
+        <Rating
+          showRating
+          fractions={1}
+          startingValue={4.3}
+          onFinishRating={this.updateReview}
         />
-        <Text>{this.state.name}</Text>
-        <Text>{this.state.price}</Text>
-        <Text>{this.state.review}</Text>
+        <Button title="Add" onPress={this.addReview} />
       </View>
     );
   }
@@ -55,14 +70,16 @@ const styles = StyleSheet.create({
   container: {
     padding: 10,
   },
+  title: {
+    fontSize: 20,
+  },
   input: {
     marginTop: 10,
     padding: 10,
     borderWidth: 1,
     borderRadius: 10,
   },
-  slider: {},
   label: {
     marginTop: 10,
-  }
+  },
 });
