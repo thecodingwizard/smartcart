@@ -68,7 +68,7 @@ export default class PostReview extends Component {
 
     if (this.state.priceError || this.state.nameError) return;
 
-    firebase.firestore().collection("review").doc(this.state.name).set({
+    firebase.firestore().collection("review").doc().set({
       name: this.state.name,
       price: this.state.price,
       rating: this.state.review,
