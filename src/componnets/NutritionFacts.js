@@ -4,12 +4,10 @@ import React from "react";
 function isIndented(str) {
   switch (str.toLowerCase()) {
     case 'saturated fat':
-      return true;
     case 'trans fat':
-      return true;
     case 'dietary fiber':
-      return true;
     case 'sugar':
+    case 'sugars':
       return true;
     default:
       return false;
