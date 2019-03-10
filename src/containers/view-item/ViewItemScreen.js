@@ -32,7 +32,7 @@ class ViewItemScreen extends Component {
     }
 
     if (this.props.notFound && !prevProps.notFound) {
-      this.props.navigation.navigate('AddItem', {
+      this.props.navigation.replace('AddItem', {
         upc: this.props.navigation.getParam('upc'),
       });
     }
@@ -41,12 +41,13 @@ class ViewItemScreen extends Component {
   render() {
     const { navigation } = this.props;
     const upc = navigation.getParam('upc');
+    console.log(this.props.itemDetails);
     return (
       <ScrollView style={style.container}>
         {this.props.itemDetails && (
           <React.Fragment>
-            <NutritionFacts />
-            <IngredientsList />
+            <NutritionFacts item={this.props.itemDetails} />
+            <IngredientsList item={this.props.itemDetails} />
             <ProConList />
             <View style={{ height: 40 }} />
           </React.Fragment>
@@ -67,10 +68,10 @@ const ingredients =
   `concentrate, corn oil, spices (including jalapeno pepper), citric acid, ` +
   `paprika extracts, lactic acid.`;
 
-const IngredientsList = () => (
+const IngredientsList = (props) => (
   <View style={style.ingredientsList}>
     <Text style={style.ingredientsTitle}>Ingredients List</Text>
-    <Text style={style.ingredientsContent}>{ingredients}</Text>
+    <Text style={style.ingredientsContent}>{props.item.ingredients}</Text>
   </View>
 );
 
@@ -99,19 +100,20 @@ const renderItem = ({ item }) => (
       {(item.indented ? '        ' : '') + item.name}
     </Text>
     <Text style={{ flex: 1 }}>{item.amount}</Text>
-    <Text style={{ flex: 1 }}>
-      {item.percent.length > 0 && item.percent + '%'}
-    </Text>
+    {/*<Text style={{ flex: 1 }}>*/}
+      {/*{item.percent.length > 0 && item.percent + '%'}*/}
+    {/*</Text>*/}
   </View>
 );
 
-const NutritionFacts = () => (
+const NutritionFacts = props => (
   <View style={style.nutritionFacts}>
     <Text style={style.nutritionFactsTitle}>Nutrition Facts</Text>
     <FlatList
       data={[
-        { name: 'Category', amount: 'Amount', percent: 'Daily ' },
-        ...nutritions,
+        // { name: 'Category', amount: 'Amount', percent: 'Daily ' },
+        { name: 'Category', amount: 'Amount' },
+        ...props.item.nutritions,
       ]}
       renderItem={renderItem}
       keyExtractor={({ name }) => name}
@@ -216,6 +218,7 @@ const mapStateToProps = state => {
     itemDetails: state.items.itemDetails,
     loading: state.items.loading,
     error: state.items.error,
+    notFound: state.items.notFound,
   };
 };
 
