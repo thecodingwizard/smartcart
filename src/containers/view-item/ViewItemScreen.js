@@ -2,15 +2,16 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { StyleSheet, Text, View } from "react-native";
 import { getItemDetails } from "../../actions/items.actions";
+import { HeaderTitle } from "react-navigation";
 
-const ScreenTitle = props => <Text>{props.text}</Text>;
+const ScreenTitle = ({ text, ...otherProps }) => <HeaderTitle {...otherProps}>{text}</HeaderTitle>;
 const ScreenTitleContainer = connect(state => ({
   text: state.items.itemDetails ? state.items.itemDetails.name : "Loading..."
 }))(ScreenTitle);
 
 class ViewItemScreen extends Component {
   static navigationOptions = {
-    title: <ScreenTitleContainer />,
+    headerTitle: ScreenTitleContainer,
   };
 
   componentDidMount() {
