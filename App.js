@@ -7,6 +7,7 @@ import { Link, NativeRouter, Route, Switch } from "react-router-native";
 import Home from "./src/containers/Home";
 import ScanItem from "./src/containers/scan-item/ScanItem";
 import PostReview from "./src/containers/post-review/PostReview";
+import ViewItem from "./src/containers/view-item/ViewItem";
 import ViewList from "./src/containers/view-item/ViewList";
 
 import configureStore from "./src/store/configureStore";
@@ -37,6 +38,7 @@ export default class App extends React.Component {
               <Route exact path="/" component={Home}/>
               <Route path="/scan" component={ScanItem}/>
               <Route path="/post-review/:upc" component={PostReview}/>
+              <Route path="/view-item/:upc" component={ViewItem}/>
               <Route path="/view-list" component={ViewList}/>
               <Route render={() => <Text>page not found</Text>}/>
             </Switch>
