@@ -37,9 +37,9 @@ class ViewItemReviews extends Component {
 }
 
 const mapStateToProps = state => ({
-  loading: state.props.loading,
-  error: state.props.error,
-  reviews: state.props.reviews,
+  loading: state.items.loading,
+  error: state.items.error,
+  reviews: state.items.reviews,
 });
 
 export default connect(mapStateToProps)(ViewItemReviews);
