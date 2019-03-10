@@ -19,12 +19,12 @@ class ViewItemPage extends Component {
     const type = this.props.match.params.type;
     return (
       <View>
-        <Text>
-          View Item UPC code: {upc}
-        </Text>
+        {
+          this.props.itemDetails &&
+          <Text>Item Details: {JSON.stringify(this.props.itemDetails)}</Text>
+        }
         {this.props.loading && <Text>Loading...</Text>}
         {this.props.error && <Text>Error: {this.props.error}</Text>}
-        {this.props.itemDetails && <Text>Item Details: {JSON.stringify(this.props.itemDetails)}</Text>}
       </View>
     );
   }
