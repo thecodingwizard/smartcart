@@ -71,6 +71,7 @@ export default class AddItemScreen extends Component {
       Store: ${this.state.store}; `
     );
 
+
     // navigate back to home
     this.props.navigation.navigate('Home');
   };

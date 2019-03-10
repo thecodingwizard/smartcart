@@ -46,7 +46,7 @@ export default class CompareItems extends Component {
       }
       if (this.state.b.length == 0) {
         products
-          .doc('00502627')
+          .doc('00430999')
           .get()
           .then(res => {
             var data = res.data();
