@@ -92,7 +92,7 @@ export default class Home extends Component {
           <View style={styles.imageWrapper}>
             <Image
               style={styles.image}
-              source={require('../../assets/scanner-keyboard.png')}
+              source={require('../../assets/scanner.png')}
             />
             <Text style={styles.imageLabel}>compare items test</Text>
           </View>

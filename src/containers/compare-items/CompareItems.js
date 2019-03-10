@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
-import { FlatList, StyleSheet, Text, View, ScrollView } from 'react-native';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 
 const products = firebase.firestore().collection('products');
 
@@ -24,11 +24,19 @@ export default class CompareItems extends Component {
       this.state.b &&
       this.state.b.length > 0
     ) {
+      const combined = this.state.a.map((cur, i) => ({
+        name: cur.name,
+        a: cur.amount,
+        b: this.state.b[i].amount,
+      }));
       return (
-        <ScrollView style={style.comparion}>
-          <NutritionFacts nutritions={this.state.a} name={this.state.aName} />
-          <NutritionFacts nutritions={this.state.b} name={this.state.bName} />
-        </ScrollView>
+        <View>
+          <NutritionFacts
+            nutritions={combined}
+            a={this.state.aName}
+            b={this.state.bName}
+          />
+        </View>
       );
     } else {
       if (this.state.a.length == 0) {
@@ -70,22 +78,22 @@ const renderItem = ({ item }) => (
   <View style={style.nutritionFactsItem}>
     <Text
       style={{
-        flex: 3,
+        flex: 1,
         fontWeight: '900',
         ...(item.indented ? style.nutritionFactsUnbold : {}),
       }}
     >
       {(item.indented ? '        ' : '') + item.name}
     </Text>
-    <Text style={{ flex: 1 }}>{item.amount}</Text>
+    <Text style={{ flex: 1 }}>{item.a}</Text>
+    <Text style={{ flex: 1 }}>{item.b}</Text>
   </View>
 );
 
-const NutritionFacts = ({ nutritions, name }) => (
+const NutritionFacts = ({ nutritions, a, b }) => (
   <View style={style.nutritionFacts}>
-    <Text style={style.nutritionFactsTitle}>{name}</Text>
     <FlatList
-      data={[{ name: 'Category', amount: 'Amount' }, ...nutritions]}
+      data={[{ name: 'Food Item', a, b }, ...nutritions]}
       renderItem={renderItem}
       keyExtractor={({ name }) => name}
     />
