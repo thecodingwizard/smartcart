@@ -41,10 +41,7 @@ class Register extends Component {
       this.setState(state => ({...state, wrongPassword: true}));
     } else {
       firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        // ...
+
         switch (error.code) {
           case "auth/email-already-in-use":
             this.setState(state => ({...state, errorCode: EMAIL_USED}));
