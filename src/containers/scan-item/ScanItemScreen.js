@@ -54,7 +54,7 @@ class Scanner extends React.Component {
       <View>
         <BarCodeScanner
           onBarCodeScanned={this.props.onBarCodeScanned}
-          style={{ ...StyleSheet.absoluteFill, ...styles.barcodeScanner }}
+          style={{ ...styles.absoluteFill, ...styles.barcodeScanner }}
         />
       </View>
     );
