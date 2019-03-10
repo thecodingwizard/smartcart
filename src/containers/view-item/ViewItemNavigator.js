@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { createMaterialTopTabNavigator, HeaderTitle } from "react-navigation";
 import ViewItemDetails from "./ViewItemDetails";
+import ViewItemReviews from "./ViewItemReviews";
 
 const ScreenTitle = ({ text, ...otherProps }) => (
   <HeaderTitle {...otherProps}>{text}</HeaderTitle>
@@ -16,7 +17,7 @@ const navigationOptions = {
 
 let ViewItemNavigator = createMaterialTopTabNavigator({
   ViewItemDetails: ViewItemDetails,
-  ViewItemReviews: ViewItemDetails,
+  ViewItemReviews: ViewItemReviews,
 });
 
 ViewItemNavigator.navigationOptions = navigationOptions;
