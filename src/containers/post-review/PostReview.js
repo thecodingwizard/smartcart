@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 
 import { Divider, Rating } from "react-native-elements";
+import * as firebase from "firebase";
 
 export default class PostReview extends Component {
   state = {
@@ -32,6 +33,14 @@ export default class PostReview extends Component {
   updateReview = review => {
     this.setState(state => ({ ...state, review }));
   };
+
+  addDocCallback() {
+    alert(
+        `Added review of ${this.state.name} with price ` +
+        `of $${this.state.price} and a review of ${this.state.review}/5`
+    );
+    this.props.navigation.replace("Home");
+  }
 
   addReview = () => {
     if (this.state.name.length <= 0) {
@@ -58,13 +67,12 @@ export default class PostReview extends Component {
 
     if (this.state.priceError || this.state.nameError) return;
 
-    // TODO: add review to firebase
+    firebase.firestore().collection("review").doc(this.state.name).set({
+      name: this.state.name,
+      price: this.state.price,
+      rating: this.state.review
+    }).then(() => this.addDocCallback()).catch(() => alert("Sorry, there was an error."));
 
-    // temp: alert user
-    alert(
-      `Added review of ${this.state.name} with price ` +
-        `of $${price} and a review of ${this.state.review}/5`
-    );
 
     // navigate back to home
     this.props.navigation.navigate('Home');
@@ -106,9 +114,9 @@ export default class PostReview extends Component {
           <Button title="Add" onPress={this.addReview} />
         </View>
         {(this.state.nameError) &&
-        <Text>Sorry. There was an error with the product name.</Text>}
+        <Text style={styles.textStyle}>Sorry. There was an error with the product name.</Text>}
         {(this.state.priceError) &&
-        <Text>Sorry. There was an error with the price.</Text>}
+        <Text style={styles.textStyle}>Sorry. There was an error with the price.</Text>}
       </View>
     );
   }
@@ -136,4 +144,7 @@ const styles = StyleSheet.create({
   btnContainer: {
     marginHorizontal: 20,
   },
+  textStyle: {
+    paddingLeft: 20
+  }
 });

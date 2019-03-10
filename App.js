@@ -7,11 +7,12 @@ import Home from './src/containers/Home';
 import ScanItemScreen from './src/containers/scan-item/ScanItemScreen';
 import PostReview from './src/containers/post-review/PostReview';
 import ViewItemScreen from './src/containers/view-item/ViewItemScreen';
-import AddItemScreen from "./src/containers/add-item/AddItemScreen";
+import AddItemScreen from './src/containers/add-item/AddItemScreen';
 import Register from './src/auth/Register';
 import configureStore from './src/store/configureStore';
 import './src/services/firebase-init';
-import SignInPage from "./src/auth/SignInPage";
+import SignInPage from './src/auth/SignInPage';
+import CompareItems from './src/containers/compare-items/CompareItems';
 
 const AppNavigator = createStackNavigator(
   {
@@ -19,15 +20,16 @@ const AppNavigator = createStackNavigator(
     ViewItem: ViewItemScreen,
     ScanItem: ScanItemScreen,
     AddItem: AddItemScreen,
-    // PostReview: PostReview,
+    CompareItems: CompareItems,
+    PostReview: PostReview
     // Register: Register,
     // SignInPage: SignInPage
   },
   {
-    initialRouteName: "Home",
+    initialRouteName: 'Home',
     defaultNavigationOptions: {
       headerStyle: {
-        backgroundColor: "#0967D2",
+        backgroundColor: '#0967D2',
       },
       headerTintColor: '#fff',
     },

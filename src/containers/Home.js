@@ -59,22 +59,20 @@ export default class Home extends Component {
             <Text style={styles.imageLabel}>View item</Text>
           </View>
         </TouchableHighlight>
-        {/*<TouchableHighlight*/}
-          {/*underlayColor="#f0f4f7"*/}
-          {/*onPress={() =>*/}
-            {/*this.props.navigation.navigate('PostReview', {*/}
-              {/*upc: '00430999',*/}
-            {/*})*/}
-          {/*}*/}
-        {/*>*/}
-          {/*<View style={styles.imageWrapper}>*/}
-            {/*<Image*/}
-              {/*style={styles.image}*/}
-              {/*source={require('../../assets/pencil-alt.png')}*/}
-            {/*/>*/}
-            {/*<Text style={styles.imageLabel}>Post review</Text>*/}
-          {/*</View>*/}
-        {/*</TouchableHighlight>*/}
+        <TouchableHighlight
+          underlayColor="#f0f4f7"
+          onPress={() =>
+          this.props.navigation.navigate('PostReview', {
+              upc: '00430999'})}
+        >
+          <View style={styles.imageWrapper}>
+            <Image
+              style={styles.image}
+              source={require('../../assets/pencil-alt.png')}
+            />
+            <Text style={styles.imageLabel}>Post review</Text>
+          </View>
+        </TouchableHighlight>
         <TouchableHighlight
           underlayColor="#f0f4f7"
           onPress={() => this.props.navigation.navigate('ScanItem')}
@@ -97,6 +95,18 @@ export default class Home extends Component {
               source={require('../../assets/scanner-keyboard.png')}
             />
             <Text style={styles.imageLabel}>Add item</Text>
+          </View>
+        </TouchableHighlight>
+        <TouchableHighlight
+          underlayColor="#f0f4f7"
+          onPress={() => this.props.navigation.navigate('CompareItems')}
+        >
+          <View style={styles.imageWrapper}>
+            <Image
+              style={styles.image}
+              source={require('../../assets/scanner-keyboard.png')}
+            />
+            <Text style={styles.imageLabel}>compare items test</Text>
           </View>
         </TouchableHighlight>
       </ScrollView>
