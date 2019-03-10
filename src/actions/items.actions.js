@@ -1,6 +1,7 @@
 export const GET_ITEM_DETAILS = "[Items] Get Item Details";
 export const GET_ITEM_DETAILS_SUCCESS = "[Items] Get Item Details Success";
 export const GET_ITEM_DETAILS_FAIL = "[Items] Get Item Details Fail";
+export const GET_ITEM_NOT_FOUND = "[Items] Get Item Not Found";
 
 export function getItemDetails(upcCode) {
   return {
@@ -20,5 +21,11 @@ export function getItemDetailsFail(error) {
   return {
     type: GET_ITEM_DETAILS_FAIL,
     error
+  };
+}
+
+export function getItemNotFound() {
+  return {
+    type: GET_ITEM_NOT_FOUND
   };
 }

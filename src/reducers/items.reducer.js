@@ -4,6 +4,7 @@ const initialState = {
   itemDetails: null,
   loading: false,
   error: null,
+  notFound: false,
 };
 
 const itemsReducer = (state = initialState, action) => {
@@ -13,6 +14,7 @@ const itemsReducer = (state = initialState, action) => {
         ...state,
         loading: true,
         itemDetails: null,
+        notFound: false,
       };
     case fromActions.GET_ITEM_DETAILS_SUCCESS:
       return {
@@ -25,6 +27,13 @@ const itemsReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         error: action.error
+      };
+    case fromActions.GET_ITEM_NOT_FOUND:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        notFound: true
       };
     default: {
       return state;

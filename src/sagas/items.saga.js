@@ -5,7 +5,11 @@ import * as itemsActions from "../actions/items.actions";
 function* getItemDetails(action) {
   try {
     const response = yield call(upcService.getUPCItem, action.upcCode);
-    yield put(itemsActions.getItemDetailsSuccess(response));
+    if (response === null) {
+      yield put(itemsActions.getItemNotFound());
+    } else {
+      yield put(itemsActions.getItemDetailsSuccess(response));
+    }
   } catch (e) {
     yield put(itemsActions.getItemDetailsFail(e.message));
   }

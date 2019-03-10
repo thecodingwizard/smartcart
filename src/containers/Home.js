@@ -59,22 +59,22 @@ export default class Home extends Component {
             <Text style={styles.imageLabel}>View item</Text>
           </View>
         </TouchableHighlight>
-        <TouchableHighlight
-          underlayColor="#f0f4f7"
-          onPress={() =>
-            this.props.navigation.navigate('PostReview', {
-              upc: '00430999',
-            })
-          }
-        >
-          <View style={styles.imageWrapper}>
-            <Image
-              style={styles.image}
-              source={require('../../assets/pencil-alt.png')}
-            />
-            <Text style={styles.imageLabel}>Post review</Text>
-          </View>
-        </TouchableHighlight>
+        {/*<TouchableHighlight*/}
+          {/*underlayColor="#f0f4f7"*/}
+          {/*onPress={() =>*/}
+            {/*this.props.navigation.navigate('PostReview', {*/}
+              {/*upc: '00430999',*/}
+            {/*})*/}
+          {/*}*/}
+        {/*>*/}
+          {/*<View style={styles.imageWrapper}>*/}
+            {/*<Image*/}
+              {/*style={styles.image}*/}
+              {/*source={require('../../assets/pencil-alt.png')}*/}
+            {/*/>*/}
+            {/*<Text style={styles.imageLabel}>Post review</Text>*/}
+          {/*</View>*/}
+        {/*</TouchableHighlight>*/}
         <TouchableHighlight
           underlayColor="#f0f4f7"
           onPress={() => this.props.navigation.navigate('ScanItem')}

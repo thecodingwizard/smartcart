@@ -29,6 +29,10 @@ class ViewItemScreen extends Component {
         getItemDetails(this.props.navigation.getParam("upc")),
       );
     }
+
+    if (this.props.notFound && !prevProps.notFound) {
+      this.props.navigation.navigate("AddItem");
+    }
   }
 
   render() {
@@ -37,10 +41,10 @@ class ViewItemScreen extends Component {
     return (
       <View style={style.container}>
         {this.props.itemDetails && (
-          <>
+          <React.Fragment>
             <Text style={style.header}>{this.props.itemDetails.name}</Text>
             <Text>{JSON.stringify(this.props.itemDetails, null, 4)}</Text>
-          </>
+          </React.Fragment>
         )}
         {this.props.loading && <Text>Loading...</Text>}
         {this.props.error && <Text>Error: {this.props.error}</Text>}
@@ -54,16 +58,15 @@ const mapStateToProps = state => {
     itemDetails: state.items.itemDetails,
     loading: state.items.loading,
     error: state.items.error,
+    notFound: state.items.notFound,
   };
 };
 const style = StyleSheet.create({
   container: {
-    padding: 10,
-    backgroundColor: "white"
+    padding: 20,
   },
-  header:{
-    fontSize:28,
-    fontWeight:"bold",
+  header: {
+    fontSize: 28,
   },
   muted:{
     fontSize:25,

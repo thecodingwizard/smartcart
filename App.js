@@ -17,9 +17,9 @@ const AppNavigator = createStackNavigator(
     Home: Home,
     ViewItem: ViewItemScreen,
     ScanItem: ScanItemScreen,
-    PostReview: PostReview,
-    Register: Register,
-    SignInPage: SignInPage
+    // PostReview: PostReview,
+    // Register: Register,
+    // SignInPage: SignInPage
   },
   {
     initialRouteName: "Home",

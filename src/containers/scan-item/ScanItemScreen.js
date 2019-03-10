@@ -8,7 +8,7 @@ export default class ScanItemScreen extends React.Component {
   };
 
   handleBarCodeScanned = ({ type, data }) => {
-    this.props.navigation.replace('ViewItem', {
+    this.props.navigation.replace("ViewItem", {
       upc: data,
     });
   };
@@ -16,7 +16,7 @@ export default class ScanItemScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Reader
+        <Scanner
           onBarCodeScanned={this.handleBarCodeScanned}
           style={styles.backgroundContainer}
         />
@@ -31,7 +31,7 @@ export default class ScanItemScreen extends React.Component {
   }
 }
 
-class Reader extends React.Component {
+class Scanner extends React.Component {
   state = {
     hasCameraPermission: null,
   };
