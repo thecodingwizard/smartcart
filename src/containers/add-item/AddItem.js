@@ -13,57 +13,64 @@ import { Divider, Rating } from "react-native-elements";
 export default class AddItem extends Component {
   state = {
     name: '',
-    price: '',
-    review: 4.3,
+    store: '0niNMGWHs1uXsi0EZqGz',
+    category:'',
     nameError: false,
     priceError: false,
+    categoryError: false,
+    storeError: false
   };
 
   static navigationOptions = {
-    title: 'Add Review',
+    title: 'Add Item',
   };
 
   updateName = name => {
     this.setState(state => ({ ...state, name }));
   };
-  updatePrice = price => {
-    this.setState(state => ({ ...state, price }));
+  updateStore = store => {
+    this.setState(state => ({ ...state, store }));
   };
-  updateReview = review => {
-    this.setState(state => ({ ...state, review }));
+  updateCategory = category => {
+    this.setState(state => ({ ...state, category }));
   };
 
-  addReview = () => {
+  addItem = () => {
     if (this.state.name.length <= 0) {
+      alert("name Err")
       this.setState(state => ({ ...state, nameError: true }));
       return;
     } else {
       this.setState(state => ({ ...state, nameError: false }));
     }
-    if (this.state.price.length <= 0) {
-      this.setState(state => ({ ...state, priceError: true }));
+    if (this.state.store.length <= 0) {
+      alert("store Err")
+      this.setState(state => ({ ...state, storeError: true }));
       return;
     } else {
-      this.setState(state => ({ ...state, priceError: false }));
+      this.setState(state => ({ ...state, storeError: false }));
     }
-
-    // check that price is valid
-    const price = Number(this.state.price);
-    if (isNaN(price)) {
-      this.setState(state => ({ ...state, priceError: true }));
+    if (this.state.category.length <= 0) {
+      alert("cat Err")
+      this.setState(state => ({ ...state, categoryError: true }));
       return;
     } else {
-      this.setState(state => ({ ...state, priceError: false }));
+      this.setState(state => ({ ...state, categoryError: false }));
     }
 
-    if (this.state.priceError || this.state.nameError) return;
+
+
+
+    if (this.state.nameError || this.state.categoryError || this.state.storeError) return;
 
     // TODO: add review to firebase
 
     // temp: alert user
     alert(
-      `Added review of ${this.state.name} with price ` +
-        `of $${price} and a review of ${this.state.review}/5`
+      `Success! 
+      Name: ${this.state.name}; 
+      Category: ${this.state.category};
+      Store: ${this.state.store}; `
     );
 
     // navigate back to home
@@ -87,23 +94,22 @@ export default class AddItem extends Component {
           style={{
             ...styles.input,
           }}
-          placeholder="Item price"
-          keyboardType="decimal-pad"
-          onChangeText={this.updatePrice}
+          placeholder="Item category"
+          onChangeText={this.updateCategory}
         />
         <Divider />
-        <Text style={styles.upc}>UPC code: {upc}</Text>
-        <Rating
-          showRating
-          fractions={1}
-          startingValue={this.state.review}
-          onFinishRating={this.updateReview}
+        <TextInput
           style={{
-            marginBottom: 30,
+            ...styles.input,
           }}
+          placeholder="Item store"
+          value="0niNMGWHs1uXsi0EZqGz"
+          readonly
+          onChangeText={this.updateStore}
         />
+        <Divider />
         <View style={{ ...styles.btnContainer }}>
-          <Button title="Add" onPress={this.addReview} />
+          <Button title="Add" onPress={this.addItem} />
         </View>
       </View>
     );
