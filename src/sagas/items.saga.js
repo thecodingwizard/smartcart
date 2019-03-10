@@ -17,7 +17,7 @@ function* getItemDetails(action) {
 
 function* addItem(action) {
   // action.data = item data
-  
+  console.log(action.data);
 }
 
 function* itemsSaga() {

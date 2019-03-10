@@ -65,21 +65,14 @@ class AddItemScreen extends Component {
     if (this.state.nameError || this.state.categoryError || this.state.storeError) return;
 
     this.props.dispatch(addReview({
-      // TODO
-      upcCode: "000000",
-      store: "Trader's Joe",
-      category: "beans",
-      description: "Blah blah blah",
+      // TODO: rating
+      upcCode: this.props.navigation.getParam('upc'),
+      name: this.state.name,
+      category: this.state.category,
+      store: this.state.store,
       rating: 4.32
     }));
 
-    // temp: alert user
-    alert(
-      `Success! 
-      Name: ${this.state.name}; 
-      Category: ${this.state.category};
-      Store: ${this.state.store}; `
-    );
 
 
     // navigate back to home
@@ -162,10 +155,7 @@ class Picker extends React.Component {
   }
 
   _pickImage = async () => {
-    let result = await ImagePicker.launchCameraAsync({
-      allowsEditing: true,
-      aspect: [4, 3],
-    });
+    let result = await ImagePicker.launchCameraAsync();
 
     console.log(result);
 
