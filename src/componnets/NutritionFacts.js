@@ -1,16 +1,31 @@
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import React from "react";
 
+function isIndented(str) {
+  switch (str.toLowerCase()) {
+    case 'saturated fat':
+      return true;
+    case 'trans fat':
+      return true;
+    case 'dietary fiber':
+      return true;
+    case 'sugar':
+      return true;
+    default:
+      return false;
+  }
+}
+
 const renderItem = ({ item }) => (
   <View style={style.nutritionFactsItem}>
     <Text
       style={{
         flex: 3,
         fontWeight: '900',
-        ...(item.indented ? style.nutritionFactsUnbold : {}),
+        ...(isIndented(item.name) ? style.nutritionFactsUnbold : {}),
       }}
     >
-      {(item.indented ? '        ' : '') + item.name}
+      {(isIndented(item.name) ? '        ' : '') + item.name}
     </Text>
     <Text style={{ flex: 1 }}>{item.amount}</Text>
     {/*<Text style={{ flex: 1 }}>*/}
