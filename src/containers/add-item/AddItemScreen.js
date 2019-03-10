@@ -1,31 +1,38 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { Button, StyleSheet, TextInput, View, Text, ActivityIndicator } from "react-native";
-import { ImagePicker, Permissions } from "expo";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import {
+  Button,
+  StyleSheet,
+  TextInput,
+  View,
+  Text,
+  ActivityIndicator,
+} from 'react-native';
+import { ImagePicker, Permissions } from 'expo';
 
-import { CheckBox, Divider } from "react-native-elements";
-import NutritionFacts from "../../componnets/NutritionFacts";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { CheckBox, Divider } from 'react-native-elements';
+import NutritionFacts from '../../componnets/NutritionFacts';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 class AddItemScreen extends Component {
   state = {
-    name: "",
-    store: "0niNMGWHs1uXsi0EZqGz",
-    category: "",
+    name: '',
+    store: '0niNMGWHs1uXsi0EZqGz',
+    category: '',
     image: null,
     nameError: false,
     priceError: false,
     categoryError: false,
     storeError: false,
-    ingredients: "",
+    ingredients: '',
     nutritions: [],
-    nutritionName: "",
-    nutritionAmount: "",
+    nutritionName: '',
+    nutritionAmount: '',
     indented: false,
-    nMap:{
-      calories:null,
-      totalFat:null,
-      saturatedFat:null,
+    nMap: {
+      calories: null,
+      totalFat: null,
+      saturatedFat: null,
       transFat: null,
       cholesterol: null,
       sodium: null,
@@ -34,10 +41,11 @@ class AddItemScreen extends Component {
       sugars: null,
       protein: null,
     },
+    loading: false,
   };
 
   static navigationOptions = {
-    title: "Add Item",
+    title: 'Add Item',
   };
 
   updateName = name => {
@@ -51,62 +59,75 @@ class AddItemScreen extends Component {
   };
   updateImageSelected = image => {
     this.setState(state => ({ ...state, image }));
+    this.setActivityIndicatorVisible(true);
     let formData = new FormData();
-    formData.append("image", image);
+    formData.append('image', image);
     fetch('http://35.235.77.103:8000/nutritionExtract/', {
       method: 'POST',
-      body: formData
-    }).then(function(response) {
-      return response.json();
-    }).then((data) => {
-      this.autofill(data);
+      body: formData,
     })
-      .catch((e) => {
-        setActivityIndicatorVisible(false);
-        console.log(e)
+      .then(function(response) {
+        return response.json();
+      })
+      .then(data => {
+        this.autofill(data);
+      })
+      .catch(e => {
+        this.setActivityIndicatorVisible(false);
+        console.log(e);
       });
-
   };
   toString = el => {
     if (Array.isArray(el)) {
-      return el.join("");
+      return el.join('');
     } else {
-      return el + "";
+      return el + '';
     }
-  }
+  };
 
   setActivityIndicatorVisible = status => {
     if (status) {
       // show
-
+      this.setState(state => ({ ...state, loading: true }));
     } else {
       // hide
+      this.setState(state => ({ ...state, loading: false }));
     }
-  }
+  };
 
-  autofill = data =>  {
-    setActivityIndicatorVisible(false);
+  autofill = data => {
+    this.setActivityIndicatorVisible(false);
     console.log(data);
-    this.state.nMap = {
-      calories:data["Calories"] ? this.toString(data["Calories"]) : "",
-      totalFat:data["Total Fat"] ? this.toString(data["Total Fat"]) : "",
-      saturatedFat:data["Saturated Fat"] ? this.toString(data["Saturated Fat"]) : "",
-      transFat: data["Trans Fat"] ? this.toString(data["Trans Fat"]) : "",
-      cholesterol: data["Cholesterol"] ? this.toString(data["Cholesterol"]) : "",
-      sodium: data["Sodium"] ? this.toString(data["Sodium"]) : "",
-      totalCarbohydrate: data["Total Carbohydrate"] ? this.toString(data["Total Carbohydrate"]) : "",
-      dietaryFiber: data["Dietary Fiber"] ? this.toString(data["Dietary Fiber"]) : "",
-      sugars: data["Sugars"] ? this.toString(data["Sugars"]) : "",
-      protein: data["Protein"] ? this.toString(data["Protein"]) : "",
-    };
-  }
+    this.setState(state => ({
+      ...state,
+      nMap: {
+        calories: data['Calories'] ? this.toString(data['Calories']) : '',
+        totalFat: data['Total Fat'] ? this.toString(data['Total Fat']) : '',
+        saturatedFat: data['Saturated Fat']
+          ? this.toString(data['Saturated Fat'])
+          : '',
+        transFat: data['Trans Fat'] ? this.toString(data['Trans Fat']) : '',
+        cholesterol: data['Cholesterol']
+          ? this.toString(data['Cholesterol'])
+          : '',
+        sodium: data['Sodium'] ? this.toString(data['Sodium']) : '',
+        totalCarbohydrate: data['Total Carbohydrate']
+          ? this.toString(data['Total Carbohydrate'])
+          : '',
+        dietaryFiber: data['Dietary Fiber']
+          ? this.toString(data['Dietary Fiber'])
+          : '',
+        sugars: data['Sugars'] ? this.toString(data['Sugars']) : '',
+        protein: data['Protein'] ? this.toString(data['Protein']) : '',
+      },
+    }));
+  };
 
   updateIngredients = ingredients => {
     this.setState({ ingredients });
   };
 
-
-  addItem = (upc) => {
+  addItem = upc => {
     if (this.state.name.length <= 0) {
       this.setState(state => ({ ...state, nameError: true }));
       return;
@@ -126,29 +147,31 @@ class AddItemScreen extends Component {
       this.setState(state => ({ ...state, categoryError: false }));
     }
 
+    if (
+      this.state.nameError ||
+      this.state.categoryError ||
+      this.state.storeError
+    )
+      return;
 
-    if (this.state.nameError || this.state.categoryError || this.state.storeError) return;
-
-
-    this.props.dispatch(addItem({
-      // TODO: rating
-      upcCode: this.props.navigation.getParam('upc'),
-      name: this.state.name,
-      category: this.state.category,
-      store: this.state.store,
-      rating: 4.32,
-      nMap: this.state.nMap,
-    }));
-
-
+    this.props.dispatch(
+      addItem({
+        // TODO: rating
+        upcCode: this.props.navigation.getParam('upc'),
+        name: this.state.name,
+        category: this.state.category,
+        store: this.state.store,
+        rating: 4.32,
+        nMap: this.state.nMap,
+      })
+    );
 
     // navigate back to home
     this.props.navigation.navigate('Home');
-
   };
 
   render() {
-    const upc = this.props.navigation.getParam("upc");
+    const upc = this.props.navigation.getParam('upc');
     return (
       <KeyboardAwareScrollView enableOnAndroid>
         <TextInput
@@ -159,7 +182,7 @@ class AddItemScreen extends Component {
           placeholder="Item name"
           onChangeText={this.updateName}
         />
-        <Divider/>
+        <Divider />
         <TextInput
           style={{
             ...styles.input,
@@ -167,7 +190,7 @@ class AddItemScreen extends Component {
           placeholder="Item category"
           onChangeText={this.updateCategory}
         />
-        <Divider/>
+        <Divider />
         {/*TODO*/}
         {/*<TextInput*/}
         {/*style={{*/}
@@ -188,131 +211,179 @@ class AddItemScreen extends Component {
           numberOfLines={3}
           onChangeText={this.updateIngredients}
         />
-        <Divider/>
+        <Divider />
         <View style={{ ...styles.nutritionFacts }}>
-          <NutritionFacts nutritions={[/* Nothing (intentional) */]}/>
-          <View style={{ flexDirection: "row" }}>
-            <Text
-              style={{ ...styles.nutritionInput }}>
-              Calories
-            </Text>
+          <NutritionFacts
+            nutritions={
+              [
+                /* Nothing (intentional) */
+              ]
+            }
+          />
+          <View style={{ flexDirection: 'row' }}>
+            <Text style={{ ...styles.nutritionInput }}>Calories</Text>
             <TextInput
               style={{ ...styles.nutritionInput }}
-              placeholder={"Calories"}
+              placeholder={'Calories'}
               value={this.state.nMap.calories}
-              onChangeText={amount => this.setState(state => ({ ...state, nMap:{ ...state.nMap, calories: amount}}))}/>
+              onChangeText={amount =>
+                this.setState(state => ({
+                  ...state,
+                  nMap: { ...state.nMap, calories: amount },
+                }))
+              }
+            />
           </View>
-          <View style={{ flexDirection: "row" }}>
-            <Text
-              style={{ ...styles.nutritionInput }}>
-              Total Fat
-            </Text>
+          <View style={{ flexDirection: 'row' }}>
+            <Text style={{ ...styles.nutritionInput }}>Total Fat</Text>
             <TextInput
               style={{ ...styles.nutritionInput }}
-              placeholder={"Total Fat"}
+              placeholder={'Total Fat'}
               value={this.state.nMap.totalFat}
-              onChangeText={amount => this.setState(state => ({ ...state, nMap:{ ...state.nMap, totalFat: amount}}))}/>
+              onChangeText={amount =>
+                this.setState(state => ({
+                  ...state,
+                  nMap: { ...state.nMap, totalFat: amount },
+                }))
+              }
+            />
           </View>
-          <View style={{ flexDirection: "row" }}>
-            <Text
-              style={{ ...styles.nutritionInput }}>
+          <View style={{ flexDirection: 'row' }}>
+            <Text style={{ ...styles.nutritionInput }}>
               &nbsp;&nbsp;&nbsp;&nbsp;Saturated Fat
             </Text>
             <TextInput
               style={{ ...styles.nutritionInput }}
-              placeholder={"Saturated Fat"}
+              placeholder={'Saturated Fat'}
               value={this.state.nMap.saturatedFat}
-              onChangeText={amount => this.setState(state => ({ ...state, nMap:{ ...state.nMap, saturatedFat: amount}}))}/>
+              onChangeText={amount =>
+                this.setState(state => ({
+                  ...state,
+                  nMap: { ...state.nMap, saturatedFat: amount },
+                }))
+              }
+            />
           </View>
-          <View style={{ flexDirection: "row" }}>
-            <Text
-              style={{ ...styles.nutritionInput }}>
+          <View style={{ flexDirection: 'row' }}>
+            <Text style={{ ...styles.nutritionInput }}>
               &nbsp;&nbsp;&nbsp;&nbsp;Trans Fat
             </Text>
             <TextInput
               style={{ ...styles.nutritionInput }}
-              placeholder={"Trans Fat"}
+              placeholder={'Trans Fat'}
               value={this.state.nMap.transFat}
-              onChangeText={amount => this.setState(state => ({ ...state, nMap:{ ...state.nMap, transFat: amount}}))}/>
+              onChangeText={amount =>
+                this.setState(state => ({
+                  ...state,
+                  nMap: { ...state.nMap, transFat: amount },
+                }))
+              }
+            />
           </View>
-          <View style={{ flexDirection: "row" }}>
-            <Text
-              style={{ ...styles.nutritionInput }}>
-              Cholesterol
-            </Text>
+          <View style={{ flexDirection: 'row' }}>
+            <Text style={{ ...styles.nutritionInput }}>Cholesterol</Text>
             <TextInput
               style={{ ...styles.nutritionInput }}
-              placeholder={"Cholesterol"}
+              placeholder={'Cholesterol'}
               value={this.state.nMap.cholesterol}
-              onChangeText={amount => this.setState(state => ({ ...state, nMap:{ ...state.nMap, cholesterol: amount}}))}/>
+              onChangeText={amount =>
+                this.setState(state => ({
+                  ...state,
+                  nMap: { ...state.nMap, cholesterol: amount },
+                }))
+              }
+            />
           </View>
-          <View style={{ flexDirection: "row" }}>
-            <Text
-              style={{ ...styles.nutritionInput }}>
-              Sodium
-            </Text>
+          <View style={{ flexDirection: 'row' }}>
+            <Text style={{ ...styles.nutritionInput }}>Sodium</Text>
             <TextInput
               style={{ ...styles.nutritionInput }}
-              placeholder={"Sodium"}
+              placeholder={'Sodium'}
               value={this.state.nMap.sodium}
-              onChangeText={amount => this.setState(state => ({ ...state, nMap:{ ...state.nMap, sodium: amount}}))}/>
+              onChangeText={amount =>
+                this.setState(state => ({
+                  ...state,
+                  nMap: { ...state.nMap, sodium: amount },
+                }))
+              }
+            />
           </View>
-          <View style={{ flexDirection: "row" }}>
-            <Text
-              style={{ ...styles.nutritionInput }}>
-              Total Carbohydrate
-            </Text>
+          <View style={{ flexDirection: 'row' }}>
+            <Text style={{ ...styles.nutritionInput }}>Total Carbohydrate</Text>
             <TextInput
               style={{ ...styles.nutritionInput }}
-              placeholder={"Total Carbohydrate"}
+              placeholder={'Total Carbohydrate'}
               value={this.state.nMap.totalCarbohydrate}
-              onChangeText={amount => this.setState(state => ({ ...state, nMap:{ ...state.nMap, totalCarbohydrate: amount}}))}/>
+              onChangeText={amount =>
+                this.setState(state => ({
+                  ...state,
+                  nMap: { ...state.nMap, totalCarbohydrate: amount },
+                }))
+              }
+            />
           </View>
-          <View style={{ flexDirection: "row" }}>
-            <Text
-              style={{ ...styles.nutritionInput }}>
+          <View style={{ flexDirection: 'row' }}>
+            <Text style={{ ...styles.nutritionInput }}>
               &nbsp;&nbsp;&nbsp;&nbsp;Dietary Fiber
             </Text>
             <TextInput
               style={{ ...styles.nutritionInput }}
-              placeholder={"Dietary Fiber"}
+              placeholder={'Dietary Fiber'}
               value={this.state.nMap.dietaryFiber}
-              onChangeText={amount => this.setState(state => ({ ...state, nMap:{ ...state.nMap, dietaryFiber: amount}}))}/>
+              onChangeText={amount =>
+                this.setState(state => ({
+                  ...state,
+                  nMap: { ...state.nMap, dietaryFiber: amount },
+                }))
+              }
+            />
           </View>
-          <View style={{ flexDirection: "row" }}>
-            <Text
-              style={{ ...styles.nutritionInput }}>
+          <View style={{ flexDirection: 'row' }}>
+            <Text style={{ ...styles.nutritionInput }}>
               &nbsp;&nbsp;&nbsp;&nbsp;Sugars
             </Text>
             <TextInput
               style={{ ...styles.nutritionInput }}
-              placeholder={"Sugars"}
+              placeholder={'Sugars'}
               value={this.state.nMap.sugars}
-              onChangeText={amount => this.setState(state => ({ ...state, nMap:{ ...state.nMap, sugars: amount}}))}/>
+              onChangeText={amount =>
+                this.setState(state => ({
+                  ...state,
+                  nMap: { ...state.nMap, sugars: amount },
+                }))
+              }
+            />
           </View>
-          <View style={{ flexDirection: "row" }}>
-            <Text
-              style={{ ...styles.nutritionInput }}>
-              Protein
-            </Text>
+          <View style={{ flexDirection: 'row' }}>
+            <Text style={{ ...styles.nutritionInput }}>Protein</Text>
             <TextInput
               style={{ ...styles.nutritionInput }}
-              placeholder={"Protein"}
+              placeholder={'Protein'}
               value={this.state.nMap.protein}
-              onChangeText={amount => this.setState(state => ({ ...state, nMap:{ ...state.nMap, protein: amount}}))}/>
+              onChangeText={amount =>
+                this.setState(state => ({
+                  ...state,
+                  nMap: { ...state.nMap, protein: amount },
+                }))
+              }
+            />
           </View>
         </View>
-        <Divider/>
-        <Picker
-          onImageSelected={this.updateImageSelected}/>
-        <Divider/>
+        <Divider />
+        <Picker onImageSelected={this.updateImageSelected} />
+        <Divider />
         <View style={{ ...styles.btnContainer }}>
-          <Button title="Add" onPress={this.addItem}/>
+          <Button title="Add" onPress={this.addItem} />
         </View>
         <ActivityIndicator
-          style={{...styles.loader}}
-          size="large" color="#0000ff"
-          animating={/*boolean here TODO */}/>
+          style={{
+            ...styles.loader,
+            ...(this.state.loading ? {} : { display: 'none' }),
+          }}
+          size="large"
+          color="#0000ff"
+          animating={this.state.loading}
+        />
         {/*{(this.props.loading) && <Text>Loading...</Text>}
         //This is suppose to throw error? Ironically enough, it causes an error... So I deleted it for now
         {(this.props.error) && <Text>Error: </Text>}*/}
@@ -335,17 +406,20 @@ class Picker extends React.Component {
   };
 
   async componentDidMount() {
-    const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL, Permissions.CAMERA);
-    this.setState({ hasCameraPermission: status === "granted" });
+    const { status } = await Permissions.askAsync(
+      Permissions.CAMERA_ROLL,
+      Permissions.CAMERA
+    );
+    this.setState({ hasCameraPermission: status === 'granted' });
   }
 
   render() {
     let { image } = this.state;
 
     return (
-      <View style={{ alignItems: "center", justifyContent: "center" }}>
+      <View style={{ alignItems: 'center', justifyContent: 'center' }}>
         <Button
-          title={("autofill nutrition facts with photo ")}
+          title={'autofill nutrition facts with photo '}
           onPress={this._pickImage}
         />
       </View>
@@ -354,12 +428,11 @@ class Picker extends React.Component {
 
   _pickImage = async () => {
     let result = await ImagePicker.launchCameraAsync({
-      base64: true
+      base64: true,
     });
 
     if (!result.cancelled) {
       this.setState({ image: result.uri });
-      setActivityIndicatorVisible(true);
       this.props.onImageSelected(result.base64);
     }
   };
@@ -375,7 +448,7 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingLeft: 20,
     paddingRight: 20,
-    textAlignVertical: "top",
+    textAlignVertical: 'top',
   },
   nameInput: {
     fontSize: 25,
@@ -396,13 +469,13 @@ const styles = StyleSheet.create({
   btnContainer: {
     marginHorizontal: 20,
   },
-  loader:  {
+  loader: {
     position: 'absolute',
     left: 0,
     right: 0,
     top: 0,
     bottom: 0,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
 });
