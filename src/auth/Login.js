@@ -23,9 +23,16 @@ class Auth extends Component {
   }
 
   signIn = () => {
-    alert('Signed In!\n' +
-        'Username: ' + this.state.userText + '\n' +
-        'Password: ' + this.state.passwordText);
+
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        alert("Signed In");
+      }
+    });
+    firebase.auth().signInWithEmailAndPassword(this.state.userText, this.state.passwordText).catch(function (e) {
+      alert("Email/Password Incorrect!");
+    });
+
   };
 
   render() {
