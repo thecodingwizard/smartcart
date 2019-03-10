@@ -47,7 +47,7 @@ export default class Home extends Component {
           underlayColor="#f0f4f7"
           onPress={() =>
             this.props.navigation.navigate('ViewItem', {
-              upc: '00502627',
+              upc: '00430999',
             })
           }
         >

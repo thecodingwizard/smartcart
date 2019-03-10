@@ -157,8 +157,6 @@ class Picker extends React.Component {
   _pickImage = async () => {
     let result = await ImagePicker.launchCameraAsync();
 
-    console.log(result);
-
     if (!result.cancelled) {
       this.setState({ image: result.uri });
     }

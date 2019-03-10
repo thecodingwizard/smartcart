@@ -33,7 +33,6 @@ class ViewItemDetails extends Component {
   render() {
     const { navigation } = this.props;
     const upc = navigation.getParam('upc');
-    console.log(this.props.itemDetails);
     return (
       <ScrollView style={style.container}>
         {this.props.itemDetails && (
