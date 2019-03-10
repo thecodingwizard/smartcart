@@ -68,13 +68,29 @@ export default class PostReview extends Component {
 
     if (this.state.priceError || this.state.nameError) return;
 
-    firebase.firestore().collection("review").doc(this.state.name).set({
-      name: this.state.name,
-      price: this.state.price,
-      rating: this.state.review,
-      upcCode: this.state.upcCode
-    }).then(() => this.addDocCallback()).catch(() => alert("Sorry, there was an error."));
+    var reviewDoc = firebase.firestore().collection("review").doc(this.state.upcCode);
 
+    reviewDoc.get().then(doc => {
+        if (!doc.exists) {
+          reviewDoc.set({
+            name: this.state.name,
+            price: this.state.price,
+            rating: this.state.review,
+            upcCode: this.state.upcCode
+          });
+        } else {
+          reviewDoc.set({
+            name: doc.data().name,
+            price: (doc.data().price + this.state.price) / 2,
+            rating: (doc.data().rating + this.state.price) / 2,
+            upcCode: doc.data().upcCode
+          })
+        }
+        this.addDocCallback();
+      })
+      .catch ((e) => {
+        console.log(e);
+      });
 
     // navigate back to home
     this.props.navigation.navigate('Home');
