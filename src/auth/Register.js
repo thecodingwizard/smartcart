@@ -79,23 +79,13 @@ export default class Register extends Component {
         <View style={style.container}>
           <TextInput
               style={style.textBoxStyle}
-              placeholder="First Name"
-              onChangeText={text => this.setState(state => ({...state, firstName: text}))}
-          />
-          <TextInput
-              style={style.textBoxStyle}
-              placeholder="Last Name"
-              onChangeText={text => this.setState(state => ({...state, lastName: text}))}
+              placeholder="Username"
+              onChangeText={text => this.setState(state => ({...state, userName: text}))}
           />
           <TextInput
               style={style.textBoxStyle}
               placeholder="Email"
               onChangeText={text => this.setState(state => ({...state, email: text}))}
-          />
-          <TextInput
-              style={style.textBoxStyle}
-              placeholder="Username"
-              onChangeText={text => this.setState(state => ({...state, userName: text}))}
           />
           <TextInput
               style={style.textBoxStyle}
