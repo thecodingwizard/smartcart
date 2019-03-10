@@ -21,7 +21,7 @@ const AppNavigator = createStackNavigator(
     ScanItem: ScanItemScreen,
     AddItem: AddItemScreen,
     CompareItems: CompareItems,
-    // PostReview: PostReview,
+    PostReview: PostReview
     // Register: Register,
     // SignInPage: SignInPage
   },
