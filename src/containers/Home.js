@@ -6,7 +6,7 @@ export default class Home extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Link component={Button} to="/view-item/1000" title="Go to View Item" />
+        <Link component={Button} to="/view-item/00430999" title="Go to View Item" />
       </View>
     );
   }
