@@ -38,7 +38,7 @@ class ViewItemScreen extends Component {
       <View style={style.container}>
         {this.props.itemDetails && (
           <>
-            <Text style={style.header}>{this.props.itemDetails.name}</Text>
+            <Text style={style.header}>{this.props.itemDetails.name}</Text>git
             <Text>{JSON.stringify(this.props.itemDetails, null, 4)}</Text>
           </>
         )}
