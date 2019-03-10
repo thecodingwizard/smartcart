@@ -45,30 +45,34 @@ class AddItemScreen extends Component {
     this.setState({ ingredients });
   };
 
-  addItem = (upc) => {
-    // if (this.state.name.length <= 0) {
-    //   this.setState(state => ({ ...state, nameError: true }));
-    //   return;
-    // } else {
-    //   this.setState(state => ({ ...state, nameError: false }));
-    // }
-    // if (this.state.store.length <= 0) {
-    //   this.setState(state => ({ ...state, storeError: true }));
-    //   return;
-    // } else {
-    //   this.setState(state => ({ ...state, storeError: false }));
-    // }
-    // if (this.state.category.length <= 0) {
-    //   this.setState(state => ({ ...state, categoryError: true }));
-    //   return;
-    // } else {
-    //   this.setState(state => ({ ...state, categoryError: false }));
-    // }
-    //
-    //
-    // if (this.state.nameError || this.state.categoryError || this.state.storeError) return;
+  sendToFirebase(data) {
+    
+  }
 
-    // console.log(this.state.image);
+  addItem = (upc) => {
+    if (this.state.name.length <= 0) {
+      this.setState(state => ({ ...state, nameError: true }));
+      return;
+    } else {
+      this.setState(state => ({ ...state, nameError: false }));
+    }
+    if (this.state.store.length <= 0) {
+      this.setState(state => ({ ...state, storeError: true }));
+      return;
+    } else {
+      this.setState(state => ({ ...state, storeError: false }));
+    }
+    if (this.state.category.length <= 0) {
+      this.setState(state => ({ ...state, categoryError: true }));
+      return;
+    } else {
+      this.setState(state => ({ ...state, categoryError: false }));
+    }
+
+
+    if (this.state.nameError || this.state.categoryError || this.state.storeError) return;
+
+    console.log(this.state.image);
     let formData = new FormData();
     formData.append("image", this.state.image);
     fetch('http://35.235.77.103:8000/nutritionExtract/', {
@@ -76,23 +80,22 @@ class AddItemScreen extends Component {
       body: formData
     }).then(function(response) {
       return response.json();
-    }).then(function(data) {
-      console.log(data);
+    }).then((data) => {this.sendToFirebase(data)})
     }).catch((e) => console.log(e));
 
-    // this.props.dispatch(addItem({
-    //   // TODO: rating
-    //   upcCode: this.props.navigation.getParam('upc'),
-    //   name: this.state.name,
-    //   category: this.state.category,
-    //   store: this.state.store,
-    //   rating: 4.32
-    // }));
-    //
-    //
-    //
-    // // navigate back to home
-    // this.props.navigation.navigate('Home');
+    this.props.dispatch(addItem({
+      // TODO: rating
+      upcCode: this.props.navigation.getParam('upc'),
+      name: this.state.name,
+      category: this.state.category,
+      store: this.state.store,
+      rating: 4.32
+    }));
+
+
+
+    // navigate back to home
+    this.props.navigation.navigate('Home');
 
   };
 
