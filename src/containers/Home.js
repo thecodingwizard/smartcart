@@ -82,7 +82,7 @@ export default class Home extends Component {
           <View style={styles.imageWrapper}>
             <Image
               style={styles.image}
-              source={require('../../assets/scanner-keyboard.png')}
+              source={require('../../assets/barcode-scan.png')}
             />
             <Text style={styles.imageLabel}>Scan item</Text>
           </View>
