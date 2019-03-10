@@ -1,6 +1,8 @@
 import "whatwg-fetch";
 
 // TODO implement
-export function getUPCItem(upcCode) {
-
+export async function getUPCItem(upcCode) {
+  return {
+    title: "Lindor Chocolate",
+  };
 }

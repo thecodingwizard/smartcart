@@ -1,12 +1,18 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { View, Text } from "react-native";
+import { Text, View } from "react-native";
 import { getItemDetails } from "../../actions/items.actions";
 
 class ViewItemPage extends Component {
   componentDidMount() {
     this.props.dispatch(getItemDetails(this.props.match.params.upc));
   }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.match.params.upc !== prevProps.match.params.upc) {
+      this.props.dispatch(getItemDetails(this.props.match.params.upc));
+    }
+  };
 
   render() {
     const upc = this.props.match.params.upc;
@@ -17,8 +23,9 @@ class ViewItemPage extends Component {
         </Text>
         {this.props.loading && <Text>Loading...</Text>}
         {this.props.error && <Text>Error: {this.props.error}</Text>}
+        {this.props.itemDetails && <Text>Item Details: {JSON.stringify(this.props.itemDetails)}</Text>}
       </View>
-    )
+    );
   }
 }
 
