@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { StyleSheet, Text, View } from "react-native";
 import { getItemDetails } from "../../actions/items.actions";
 import { HeaderTitle } from "react-navigation";
-import { Rating } from 'react-native-elements';
+
 
 const ScreenTitle = ({ text, ...otherProps }) => <HeaderTitle {...otherProps}>{text}</HeaderTitle>;
 const ScreenTitleContainer = connect(state => ({
@@ -39,9 +39,6 @@ class ViewItemScreen extends Component {
         {this.props.itemDetails && (
           <>
             <Text style={style.header}>{this.props.itemDetails.name}</Text>
-            <Text style={style.muted}>{this.props.itemDetails.weight + this.props.itemDetails.weightUnit} |
-              {"\u2605".repeat(Math.floor(this.props.itemDetails.rating)) + "\u2BEA"} </Text>
-
             <Text>{JSON.stringify(this.props.itemDetails, null, 4)}</Text>
           </>
         )}
