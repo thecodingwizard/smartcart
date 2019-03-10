@@ -4,7 +4,7 @@ import { StyleSheet, FlatList, Text, View } from 'react-native';
 import { Link } from 'react-router-native';
 
 const items = [
-  { key: 'Devin', name: 'foo' },
+  { key: 'Jack', name: 'foo' },
   { key: 'Jackson' },
   { key: 'James' },
   { key: 'Joel' },

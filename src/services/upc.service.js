@@ -1,6 +1,14 @@
 import "whatwg-fetch";
+import * as firebase from "firebase/app";
+import "firebase/firestore";
+export async function getUPCItem(upcCode) {
+  return await queryInternalDatabase(upcCode);
+}
+async function queryInternalDatabase(upc) {
 
-// TODO implement
-export function getUPCItem(upcCode) {
+  firebase.firestore().collection("products").doc(upc).get().then(function(doc) {
 
+    let data = doc.data();
+    return data;
+  });
 }

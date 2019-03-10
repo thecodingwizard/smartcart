@@ -8,8 +8,10 @@ import Home from "./src/containers/Home";
 import ScanItem from "./src/containers/scan-item/ScanItem";
 import PostReview from "./src/containers/post-review/PostReview";
 import ViewList from "./src/containers/view-item/ViewList";
-
 import configureStore from "./src/store/configureStore";
+import ViewItem from "./src/containers/view-item/ViewItem";
+import './src/services/firebase-init';
+
 const store = configureStore();
 
 export default class App extends React.Component {
@@ -38,6 +40,7 @@ export default class App extends React.Component {
               <Route path="/scan" component={ScanItem}/>
               <Route path="/post-review/:upc" component={PostReview}/>
               <Route path="/view-list" component={ViewList}/>
+              <Route path="/view-item/:upc/:type" component={ViewItem}/>
               <Route render={() => <Text>page not found</Text>}/>
             </Switch>
           </View>
