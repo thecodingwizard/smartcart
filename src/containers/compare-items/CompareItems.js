@@ -1,9 +1,24 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet, Text, View, Button } from 'react-native';
 
 const products = firebase.firestore().collection('products');
+
+function isIndented(str) {
+  switch (str.toLowerCase()) {
+    case 'saturated fat':
+      return true;
+    case 'trans fat':
+      return true;
+    case 'dietary fiber':
+      return true;
+    case 'sugar':
+      return true;
+    default:
+      return false;
+  }
+}
 
 export default class CompareItems extends Component {
   static navigationOptions = {
@@ -11,6 +26,10 @@ export default class CompareItems extends Component {
   };
 
   state = {
+    // upc's of items
+    firstItem: '',
+    secondItem: '',
+    // list of nutritions
     a: [],
     aName: '',
     b: [],
@@ -19,16 +38,64 @@ export default class CompareItems extends Component {
 
   render() {
     if (
+      this.props.navigation.getParam('otherUpc', '').length === 0 ||
+      this.props.navigation.getParam('upc', '').length === 0
+    ) {
+      const firstItem = this.props.navigation.getParam('upc', '');
+      const secondItem = this.props.navigation.getParam('otherUpc', '');
+
+      if (firstItem.length === 0 && secondItem.length === 0) {
+        return (
+          <View style={style.container}>
+            <Button
+              style={style.button}
+              title="Scan barcode of first item"
+              onPress={() =>
+                this.props.navigation.navigate('ScanItem', {
+                  goBackToCompareA: true,
+                })
+              }
+            />
+          </View>
+        );
+      } else if (secondItem.length === 0) {
+        return (
+          <View style={style.container}>
+            <Text style={style.label}>&#9989;</Text>
+            <Button
+              style={style.button}
+              title="Scan barcode of second item"
+              onPress={() =>
+                this.props.navigation.navigate('ScanItem', {
+                  goBackToCompareB: true,
+                  otherParam: firstItem,
+                })
+              }
+            />
+          </View>
+        );
+      }
+    } else if (
       this.state.a &&
       this.state.a.length > 0 &&
       this.state.b &&
       this.state.b.length > 0
     ) {
-      const combined = this.state.a.map((cur, i) => ({
-        name: cur.name,
-        a: cur.amount,
-        b: this.state.b[i].amount,
-      }));
+      const combined = this.state.a
+        .map((cur, i) => ({
+          name: cur.name,
+          a: cur.amount,
+          b: i < this.state.b.length ? this.state.b[i].amount : '',
+          indented: isIndented(cur.name),
+        }))
+        .concat(
+          this.state.b.slice(this.state.a.length).map(a => ({
+            ...a,
+            a: '',
+            b: a.amount,
+            indented: isIndented(a.name),
+          }))
+        );
       return (
         <View>
           <NutritionFacts
@@ -39,9 +106,12 @@ export default class CompareItems extends Component {
         </View>
       );
     } else {
+      const firstItem = this.props.navigation.getParam('upc', '');
+      const secondItem = this.props.navigation.getParam('otherUpc', '');
+
       if (this.state.a.length == 0) {
         products
-          .doc('00502627')
+          .doc(firstItem)
           .get()
           .then(res => {
             var data = res.data();
@@ -54,7 +124,7 @@ export default class CompareItems extends Component {
       }
       if (this.state.b.length == 0) {
         products
-          .doc('00430999')
+          .doc(secondItem)
           .get()
           .then(res => {
             var data = res.data();
@@ -119,5 +189,20 @@ const style = StyleSheet.create({
   },
   nutritionFactsUnbold: {
     fontWeight: '400',
+  },
+  container: {
+    padding: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  button: {
+    margin: 10,
+  },
+  label: {
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    width: '100%',
+    margin: 10,
+    fontSize: 30,
   },
 });

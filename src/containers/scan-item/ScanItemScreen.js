@@ -8,9 +8,20 @@ export default class ScanItemScreen extends React.Component {
   };
 
   handleBarCodeScanned = ({ type, data }) => {
-    this.props.navigation.replace("ViewItem", {
-      upc: data,
-    });
+    if (this.props.navigation.getParam('goBackToCompareA')) {
+      this.props.navigation.navigate('CompareItems', {
+        upc: data,
+      });
+    } else if (this.props.navigation.getParam('goBackToCompareB')) {
+      this.props.navigation.navigate('CompareItems', {
+        otherUpc: data,
+        upc: this.props.navigation.getParam('otherParam'),
+      });
+    } else {
+      this.props.navigation.replace('ViewItem', {
+        upc: data,
+      });
+    }
   };
 
   render() {
@@ -71,8 +82,8 @@ const styles = StyleSheet.create({
   },
   imageWrapper: {
     alignItems: 'center',
-    justifyContent: "center",
-    position: "absolute",
+    justifyContent: 'center',
+    position: 'absolute',
     zIndex: 10,
     top: 0,
     bottom: 0,
