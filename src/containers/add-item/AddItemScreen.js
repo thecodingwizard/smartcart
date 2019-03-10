@@ -72,11 +72,14 @@ class AddItemScreen extends Component {
 
     console.log(this.state.image);
     var formData = new FormData();
-    formData.append("IMAGE", this.state.image);
+    formData.append("IMAGE",
+      this.state.image);
     fetch('http://35.235.77.103:8000/nutritionExtract/', {
       method: 'post',
       headers:{
-        'Content-Type': 'multipart/form-data'
+        'Process-Data': false, // essential
+        'Content-Type': false,
+        'Encoding-Type': 'multipart/form-data'
       },
       body:formData
     }).then(function(response) {
@@ -85,7 +88,7 @@ class AddItemScreen extends Component {
       return response.json();
     }).then(function(data) {
       console.log(data);
-    });
+    }).catch((e) => console.log(e));
 
     // this.props.dispatch(addItem({
     //   // TODO: rating
@@ -167,18 +170,21 @@ class AddItemScreen extends Component {
               onPress={() => this.setState(state => ({ indented: !state.indented }))}/>
           </View>
           <View style={{ flexDirection: "row", justifyContent: "center" }}>
-            <Button title="Add Field" onPress={this.addNutritionField}/>
+            {/*//This button used to call 'addNutritionField', but that's gone now? Putting placeholder for now*/}
+            <Button title="Add Field" onPress={() => {}}/>
           </View>
         </View>
         <Divider/>
-        <Picker/>
+        <Picker
+          onImageSelected={this.updateImageSelected}/>
         <Divider/>
         <View style={{ ...styles.btnContainer }}>
           <Button title="Add" onPress={this.addItem}/>
         </View>
 
-        {this.props.loading && <Text>Loading...</Text>}
-        {this.props.error && <Text>Error: {this.props.error}</Text>}
+        {/*{(this.props.loading) && <Text>Loading...</Text>}
+        //This is suppose to throw error? Ironically enough, it causes an error... So I deleted it for now
+        {(this.props.error) && <Text>Error: </Text>}*/}
         </KeyboardAwareScrollView>
     );
   }
