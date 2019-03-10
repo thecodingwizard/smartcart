@@ -81,8 +81,8 @@ const nutritions = [
 ];
 
 const proCons = {
-  pros: ['Low in fat', 'Low in sodium', 'High in Iron'],
-  cons: ['High in sugars', 'High in carbohydrates', 'Low in Calcium'],
+  pros: ['Low in fat', 'Low in cholesterol', 'High in fiber'],
+  cons: ['High in sodium', 'Low in Vitamin C', 'Low in Vitamin A'],
 };
 
 const ProConList = () => (

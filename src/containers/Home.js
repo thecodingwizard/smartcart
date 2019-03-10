@@ -54,20 +54,6 @@ export default class Home extends Component {
         </TouchableHighlight>
         <TouchableHighlight
           underlayColor="#f0f4f7"
-          onPress={() => this.props.navigation.navigate('AddItem', {
-            upc: "037466012001"
-          })}
-        >
-          <View style={styles.imageWrapper}>
-            <Image
-              style={styles.image}
-              source={require('../../assets/scanner-keyboard.png')}
-            />
-            <Text style={styles.imageLabel}>Add item</Text>
-          </View>
-        </TouchableHighlight>
-        <TouchableHighlight
-          underlayColor="#f0f4f7"
           onPress={() => this.props.navigation.navigate('CompareItems')}
         >
           <View style={styles.imageWrapper}>
