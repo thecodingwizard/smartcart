@@ -6,8 +6,8 @@ import {
   View,
   Text,
   TextInput,
-  Slider,
-} from 'react-native';
+  Slider, ScrollView,
+} from "react-native";
 import { ImagePicker, Permissions } from 'expo';
 
 import { Divider, Rating } from "react-native-elements";
@@ -22,7 +22,8 @@ class AddItemScreen extends Component {
     nameError: false,
     priceError: false,
     categoryError: false,
-    storeError: false
+    storeError: false,
+    ingredients: ""
   };
 
   static navigationOptions = {
@@ -37,6 +38,9 @@ class AddItemScreen extends Component {
   };
   updateCategory = category => {
     this.setState(state => ({ ...state, category }));
+  };
+  updateIngredients = ingredients => {
+    this.setState({ ingredients });
   };
 
   addItem = (upc) => {
@@ -82,7 +86,7 @@ class AddItemScreen extends Component {
   render() {
     const upc = this.props.navigation.getParam('upc');
     return (
-      <View>
+      <ScrollView>
         <TextInput
           style={{
             ...styles.input,
@@ -100,14 +104,25 @@ class AddItemScreen extends Component {
           onChangeText={this.updateCategory}
         />
         <Divider />
+        {/*TODO*/}
+        {/*<TextInput*/}
+          {/*style={{*/}
+            {/*...styles.input,*/}
+          {/*}}*/}
+          {/*placeholder="Item store"*/}
+          {/*value="0niNMGWHs1uXsi0EZqGz"*/}
+          {/*readonly*/}
+          {/*onChangeText={this.updateStore}*/}
+        {/*/>*/}
+        {/*<Divider />*/}
         <TextInput
           style={{
             ...styles.input,
           }}
-          placeholder="Item store"
-          value="0niNMGWHs1uXsi0EZqGz"
-          readonly
-          onChangeText={this.updateStore}
+          placeholder="Item Ingredients"
+          multiline
+          numberOfLines={3}
+          onChangeText={this.updateIngredients}
         />
         <Divider />
         <Picker />
@@ -119,7 +134,7 @@ class AddItemScreen extends Component {
         {this.props.loading && <Text>Loading...</Text>}
         {this.props.error && <Text>Error: {this.props.error}</Text>}
 
-      </View>
+      </ScrollView>
     );
   }
 }
@@ -173,6 +188,7 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingLeft: 20,
     paddingRight: 20,
+    textAlignVertical: "top",
   },
   nameInput: {
     fontSize: 25,
