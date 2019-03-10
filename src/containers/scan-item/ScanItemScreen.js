@@ -3,13 +3,23 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { BarCodeScanner, Permissions } from 'expo';
 
-export default class ScanItem extends React.Component {
+export default class ScanItemScreen extends React.Component {
+  static navigationOptions = {
+    title: "Scan Barcode",
+  };
+
+  handleBarCodeScanned = ({ type, data }) => {
+    this.props.navigation.replace("ViewItem", {
+      upc: data
+    });
+  };
+
   render() {
     return (
       <View style={styles.container}>
         <Text>Scan Item page</Text>
         <Reader
-          history={this.props.history}
+          onBarCodeScanned={this.handleBarCodeScanned}
         />
       </View>
     );
@@ -19,7 +29,7 @@ export default class ScanItem extends React.Component {
 class Reader extends React.Component {
   state = {
     hasCameraPermission: null,
-  }
+  };
 
   async componentDidMount() {
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
@@ -38,16 +48,11 @@ class Reader extends React.Component {
     return (
       <View >
         <BarCodeScanner
-          onBarCodeScanned={this.handleBarCodeScanned}
+          onBarCodeScanned={this.props.onBarCodeScanned}
           style={{...StyleSheet.absoluteFill, ...styles.barcodeScanner}}
         />
       </View>
     );
-  }
-
-  handleBarCodeScanned = ({ type, data }) => {
-    console.log(`Bar code with type ${type} and data ${data} has been scanned!`);
-    this.props.history.push(`/view-item/${data}/${type}`);
   }
 }
 

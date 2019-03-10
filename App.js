@@ -4,19 +4,22 @@ import { Provider } from 'react-redux';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 
 import Home from './src/containers/Home';
-import ScanItem from './src/containers/scan-item/ScanItem';
+import ScanItemScreen from './src/containers/scan-item/ScanItemScreen';
 import PostReview from './src/containers/post-review/PostReview';
 import ViewItemScreen from './src/containers/view-item/ViewItemScreen';
-import ViewList from './src/containers/view-item/ViewList';
-import Login from './src/auth/Login';
+import Register from './src/auth/Register';
 import configureStore from './src/store/configureStore';
 import './src/services/firebase-init';
+import SignInPage from "./src/auth/SignInPage";
 
 const AppNavigator = createStackNavigator(
   {
     Home: Home,
     ViewItem: ViewItemScreen,
+    ScanItem: ScanItemScreen,
     PostReview: PostReview,
+    Register: Register,
+    SignInPage: SignInPage
   },
   {
     initialRouteName: "Home",

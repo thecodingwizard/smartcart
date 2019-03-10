@@ -65,9 +65,7 @@ class Auth extends Component {
 const styles = StyleSheet.create({
   container: {
     height: 1000,
-    paddingTop: 100,
-    padding: 10,
-    backgroundColor: "white",
+    padding: 10
   }, TextBoxStyle: {
     height: 40,
     borderWidth: 1,
@@ -76,7 +74,7 @@ const styles = StyleSheet.create({
     margin: 5
   }, ButtonStyle: {
     height: 40,
-    width: 200
+    width: 350
   }, TextStyle: {
     color: 'white'
   }
