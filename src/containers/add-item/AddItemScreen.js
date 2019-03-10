@@ -81,7 +81,7 @@ class AddItemScreen extends Component {
     }).then(function(response) {
       return response.json();
     }).then((data) => {this.sendToFirebase(data)})
-    }).catch((e) => console.log(e));
+    .catch((e) => console.log(e));
 
     this.props.dispatch(addItem({
       // TODO: rating
