@@ -17,13 +17,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   imageWrapper: {
-    marginTop: 50,
+    marginBottom: 50,
     alignItems: 'center',
     color: 'blue',
   },
   image: {
     width: 150,
     height: 150,
+  },
+  imageLabel: {
+    marginTop: 15,
+    fontSize: 20,
   },
 });
 
@@ -52,7 +56,7 @@ export default class Home extends Component {
               style={styles.image}
               source={require('../../assets/search.png')}
             />
-            <Text>View item</Text>
+            <Text style={styles.imageLabel}>View item</Text>
           </View>
         </TouchableHighlight>
         <TouchableHighlight
@@ -68,7 +72,7 @@ export default class Home extends Component {
               style={styles.image}
               source={require('../../assets/pencil-alt.png')}
             />
-            <Text>Post review</Text>
+            <Text style={styles.imageLabel}>Post review</Text>
           </View>
         </TouchableHighlight>
         <TouchableHighlight
@@ -80,7 +84,7 @@ export default class Home extends Component {
               style={styles.image}
               source={require('../../assets/scanner-keyboard.png')}
             />
-            <Text>Scan item</Text>
+            <Text style={styles.imageLabel}>Scan item</Text>
           </View>
         </TouchableHighlight>
       </ScrollView>

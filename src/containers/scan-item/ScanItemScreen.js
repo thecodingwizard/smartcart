@@ -1,26 +1,31 @@
-
 import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Image } from 'react-native';
 import { BarCodeScanner, Permissions } from 'expo';
 
 export default class ScanItemScreen extends React.Component {
   static navigationOptions = {
-    title: "Scan Barcode",
+    title: 'Scan Barcode',
   };
 
   handleBarCodeScanned = ({ type, data }) => {
-    this.props.navigation.replace("ViewItem", {
-      upc: data
+    this.props.navigation.replace('ViewItem', {
+      upc: data,
     });
   };
 
   render() {
     return (
       <View style={styles.container}>
-        <Text>Scan Item page</Text>
         <Reader
           onBarCodeScanned={this.handleBarCodeScanned}
+          style={styles.backgroundContainer}
         />
+        <View style={styles.imageWrapper}>
+          <Image
+            source={require('../../../assets/camera-box.png')}
+            style={styles.image}
+          />
+        </View>
       </View>
     );
   }
@@ -46,10 +51,10 @@ class Reader extends React.Component {
       return <Text>No access to camera</Text>;
     }
     return (
-      <View >
+      <View>
         <BarCodeScanner
           onBarCodeScanned={this.props.onBarCodeScanned}
-          style={{...StyleSheet.absoluteFill, ...styles.barcodeScanner}}
+          style={{ ...StyleSheet.absoluteFill, ...styles.barcodeScanner }}
         />
       </View>
     );
@@ -62,6 +67,21 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   barcodeScanner: {
-    height: 500
-  }
+    height: 500,
+  },
+  imageWrapper: {
+    alignItems: 'center',
+  },
+  image: {
+    width: 250,
+    height: 250,
+    top: 110,
+  },
+  backgroundContainer: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+  },
 });
