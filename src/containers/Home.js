@@ -36,6 +36,12 @@ export default class Home extends Component {
             })
           }
         />
+        <Button
+          title="Go to Scan Item"
+          onPress={() =>
+            this.props.navigation.navigate('ScanItem')
+          }
+        />
       </View>
     );
   }
