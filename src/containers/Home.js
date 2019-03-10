@@ -10,7 +10,11 @@ const styles = StyleSheet.create({
 
 export default class Home extends Component {
   static navigationOptions = {
-    title: 'Home Screen',
+    title: "Home Screen",
+    headerStyle: {
+      backgroundColor: "#0967D2",
+    },
+    headerTintColor: '#fff',
   };
 
   render() {
