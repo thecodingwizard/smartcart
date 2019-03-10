@@ -9,6 +9,7 @@ import ScanItem from "./src/containers/scan-item/ScanItem";
 import PostReview from "./src/containers/post-review/PostReview";
 import ViewItemPage from "./src/containers/view-item/ViewItemPage";
 import ViewList from "./src/containers/view-item/ViewList";
+import Login from "./src/auth/Login";
 import configureStore from "./src/store/configureStore";
 import './src/services/firebase-init';
 
@@ -33,6 +34,9 @@ export default class App extends React.Component {
               <Link to="/view-list" underlayColor="#f0f4f7" style={styles.navItem}>
                 <Text>View list</Text>
               </Link>
+              <Link to="/login" underlayColor="#f0f4f7" style={styles.navItem}>
+                <Text>Login</Text>
+              </Link>
             </View>
 
             <Switch>
@@ -41,6 +45,7 @@ export default class App extends React.Component {
               <Route path="/post-review/:upc" component={PostReview}/>
               <Route path="/view-item/:upc/:type?" component={ViewItemPage}/>
               <Route path="/view-list" component={ViewList}/>
+              <Route path="/login" component={Login}/>
               <Route render={() => <Text>page not found</Text>}/>
             </Switch>
           </View>

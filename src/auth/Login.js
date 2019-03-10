@@ -1,7 +1,8 @@
 import React, {Component} from "react";
 import {StyleSheet, TextInput, View, Button} from "react-native";
-
-export default class AuthMod extends Component {
+import * as firebase from "firebase/app";
+import "firebase/auth";
+export default class Login extends Component {
   render() {
     return (
         <View>
@@ -57,12 +58,11 @@ class Auth extends Component {
 const styles = StyleSheet.create({
   container: {
     height: 1000,
-    paddingTop: 225,
-    paddingLeft: 70,
+    paddingTop: 100,
+    padding: 10,
     backgroundColor: "white",
   }, TextBoxStyle: {
     height: 40,
-    width: 200,
     borderWidth: 1,
     borderRadius: 6,
     padding: 5,
