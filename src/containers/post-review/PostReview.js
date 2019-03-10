@@ -8,8 +8,8 @@ import {
   Slider,
 } from 'react-native';
 
-import { Divider, Rating } from "react-native-elements";
-import * as firebase from "firebase";
+import { Divider, Rating } from 'react-native-elements';
+import * as firebase from 'firebase';
 
 export default class PostReview extends Component {
   state = {
@@ -18,7 +18,7 @@ export default class PostReview extends Component {
     review: 4.3,
     nameError: false,
     priceError: false,
-    upcCode: ""
+    upcCode: '',
   };
 
   static navigationOptions = {
@@ -37,10 +37,11 @@ export default class PostReview extends Component {
 
   addDocCallback() {
     alert(
-        `Added review of ${this.state.name} with price ` +
-        `of $${this.state.price} and a review of ${this.state.review}/5`
+      `Added review titled "${this.state.name}" with a review of ${
+        this.state.review
+      }/5`
     );
-    this.props.navigation.replace("Home");
+    this.props.navigation.replace('Home');
   }
 
   addReview = () => {
@@ -51,21 +52,21 @@ export default class PostReview extends Component {
       this.setState(state => ({ ...state, nameError: false }));
     }
 
-
     if (this.state.nameError) {
       return;
     }
-    firebase.firestore()
-      .collection("review").doc(this.state.upcCode)
-      .collection("reviews").add({
+    firebase
+      .firestore()
+      .collection('review')
+      .doc(this.state.upcCode)
+      .collection('reviews')
+      .add({
         name: this.state.name,
         description: this.state.description,
         rating: this.state.review
       }).then((ref) => {
         this.addDocCallback();
-    });
-
-
+      });
 
     // navigate back to home
     this.props.navigation.navigate('Home');
@@ -106,10 +107,16 @@ export default class PostReview extends Component {
         <View style={{ ...styles.btnContainer }}>
           <Button title="Add" onPress={this.addReview} />
         </View>
-        {(this.state.nameError) &&
-        <Text style={styles.textStyle}>Sorry. There was an error with the product name.</Text>}
-        {(this.state.priceError) &&
-        <Text style={styles.textStyle}>Sorry. There was an error with the price.</Text>}
+        {this.state.nameError && (
+          <Text style={styles.textStyle}>
+            Sorry. There was an error with the product name.
+          </Text>
+        )}
+        {this.state.priceError && (
+          <Text style={styles.textStyle}>
+            Sorry. There was an error with the price.
+          </Text>
+        )}
       </View>
     );
   }
@@ -138,6 +145,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   textStyle: {
-    paddingLeft: 20
-  }
+    paddingLeft: 20,
+  },
 });

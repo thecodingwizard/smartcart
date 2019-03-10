@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {
-  Button,
   StyleSheet,
   View,
   Image,
@@ -11,13 +10,11 @@ import {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 25,
-    padding: 10,
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
     alignItems: 'center',
+    height: '100%',
   },
   imageWrapper: {
-    marginBottom: 50,
     alignItems: 'center',
     color: 'blue',
   },
@@ -27,7 +24,7 @@ const styles = StyleSheet.create({
   },
   imageLabel: {
     marginTop: 15,
-    fontSize: 20,
+    fontSize: 22,
   },
 });
 
@@ -42,37 +39,7 @@ export default class Home extends Component {
 
   render() {
     return (
-      <ScrollView contentContainerStyle={styles.container}>
-        <TouchableHighlight
-          underlayColor="#f0f4f7"
-          onPress={() =>
-            this.props.navigation.navigate('ViewItem', {
-              upc: '00430999',
-            })
-          }
-        >
-          <View style={styles.imageWrapper}>
-            <Image
-              style={styles.image}
-              source={require('../../assets/search.png')}
-            />
-            <Text style={styles.imageLabel}>View item</Text>
-          </View>
-        </TouchableHighlight>
-        <TouchableHighlight
-          underlayColor="#f0f4f7"
-          onPress={() =>
-          this.props.navigation.navigate('PostReview', {
-              upc: '00430999'})}
-        >
-          <View style={styles.imageWrapper}>
-            <Image
-              style={styles.image}
-              source={require('../../assets/pencil-alt.png')}
-            />
-            <Text style={styles.imageLabel}>Post review</Text>
-          </View>
-        </TouchableHighlight>
+      <View style={styles.container}>
         <TouchableHighlight
           underlayColor="#f0f4f7"
           onPress={() => this.props.navigation.navigate('ScanItem')}
@@ -82,7 +49,21 @@ export default class Home extends Component {
               style={styles.image}
               source={require('../../assets/barcode-scan.png')}
             />
-            <Text style={styles.imageLabel}>Scan item</Text>
+            <Text style={styles.imageLabel}>Scan Item</Text>
+          </View>
+        </TouchableHighlight>
+        <TouchableHighlight
+          underlayColor="#f0f4f7"
+          onPress={() => this.props.navigation.navigate('AddItem', {
+            upc: "037466012001"
+          })}
+        >
+          <View style={styles.imageWrapper}>
+            <Image
+              style={styles.image}
+              source={require('../../assets/scanner-keyboard.png')}
+            />
+            <Text style={styles.imageLabel}>Add item</Text>
           </View>
         </TouchableHighlight>
         <TouchableHighlight
@@ -94,10 +75,10 @@ export default class Home extends Component {
               style={styles.image}
               source={require('../../assets/scanner.png')}
             />
-            <Text style={styles.imageLabel}>compare items test</Text>
+            <Text style={styles.imageLabel}>Compare Items</Text>
           </View>
         </TouchableHighlight>
-      </ScrollView>
+      </View>
     );
   }
 }

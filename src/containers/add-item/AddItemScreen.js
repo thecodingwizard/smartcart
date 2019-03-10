@@ -1,18 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import { connect } from "react-redux";
-import {
-  StyleSheet,
-  Button,
-  View,
-  Text,
-  TextInput,
-  Slider,
-} from 'react-native';
-import { ImagePicker, Permissions } from 'expo';
+import { Button, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
+import { ImagePicker, Permissions } from "expo";
 
-import { Divider, Rating } from "react-native-elements";
+import { CheckBox, Divider } from "react-native-elements";
 
 import { addItem } from "../../actions";
+import NutritionFacts from "../../componnets/NutritionFacts";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 class AddItemScreen extends Component {
   state = {
@@ -23,11 +18,16 @@ class AddItemScreen extends Component {
     nameError: false,
     priceError: false,
     categoryError: false,
-    storeError: false
+    storeError: false,
+    ingredients: "",
+    nutritions: [],
+    nutritionName: "",
+    nutritionAmount: "",
+    indented: false,
   };
 
   static navigationOptions = {
-    title: 'Add Item',
+    title: "Add Item",
   };
 
   updateName = name => {
@@ -42,6 +42,11 @@ class AddItemScreen extends Component {
   updateImageSelected = image => {
     this.setState(state => ({...state, image}))
   }
+
+  updateIngredients = ingredients => {
+    this.setState({ ingredients });
+  };
+
   addItem = (upc) => {
     if (this.state.name.length <= 0) {
       this.setState(state => ({ ...state, nameError: true }));
@@ -63,10 +68,7 @@ class AddItemScreen extends Component {
     }
 
 
-
-
     if (this.state.nameError || this.state.categoryError || this.state.storeError) return;
-
 
     console.log(this.state.image);
     var formData = new FormData();
@@ -98,12 +100,13 @@ class AddItemScreen extends Component {
     //
     // // navigate back to home
     // this.props.navigation.navigate('Home');
+
   };
 
   render() {
-    const upc = this.props.navigation.getParam('upc');
+    const upc = this.props.navigation.getParam("upc");
     return (
-      <View>
+      <KeyboardAwareScrollView enableOnAndroid>
         <TextInput
           style={{
             ...styles.input,
@@ -112,7 +115,7 @@ class AddItemScreen extends Component {
           placeholder="Item name"
           onChangeText={this.updateName}
         />
-        <Divider />
+        <Divider/>
         <TextInput
           style={{
             ...styles.input,
@@ -120,29 +123,63 @@ class AddItemScreen extends Component {
           placeholder="Item category"
           onChangeText={this.updateCategory}
         />
-        <Divider />
+        <Divider/>
+        {/*TODO*/}
+        {/*<TextInput*/}
+        {/*style={{*/}
+        {/*...styles.input,*/}
+        {/*}}*/}
+        {/*placeholder="Item store"*/}
+        {/*value="0niNMGWHs1uXsi0EZqGz"*/}
+        {/*readonly*/}
+        {/*onChangeText={this.updateStore}*/}
+        {/*/>*/}
+        {/*<Divider />*/}
         <TextInput
           style={{
             ...styles.input,
           }}
-          placeholder="Item store"
-          value="0niNMGWHs1uXsi0EZqGz"
-          readonly
-          onChangeText={this.updateStore}
+          placeholder="Item Ingredients"
+          multiline
+          numberOfLines={3}
+          onChangeText={this.updateIngredients}
         />
-        <Divider />
-        <Picker
-          onImageSelected={this.updateImageSelected}
-        />
-        <Divider />
+
+        <Divider/>
+        <View style={{ ...styles.nutritionFacts }}>
+          <NutritionFacts nutritions={this.state.nutritions}/>
+          <View style={{ flexDirection: "row" }}>
+            <TextInput
+              placeholder="Category"
+              style={{ ...styles.nutritionInput }}
+              value={this.state.nutritionName}
+              onChangeText={category => this.setState({ nutritionName: category })}/>
+            <TextInput
+              placeholder="Amount"
+              style={{ ...styles.nutritionInput }}
+              value={this.state.nutritionAmount}
+              onChangeText={amount => this.setState({ nutritionAmount: amount })}/>
+          </View>
+          <View>
+            <CheckBox
+              title="Indented"
+              checked={this.state.indented}
+              onPress={() => this.setState(state => ({ indented: !state.indented }))}/>
+          </View>
+          <View style={{ flexDirection: "row", justifyContent: "center" }}>
+            <Button title="Add Field" onPress={this.addNutritionField}/>
+          </View>
+        </View>
+        <Divider/>
+        <Picker/>
+        <Divider/>
         <View style={{ ...styles.btnContainer }}>
-          <Button title="Add" onPress={this.addItem} />
+          <Button title="Add" onPress={this.addItem}/>
         </View>
 
         {this.props.loading && <Text>Loading...</Text>}
         {this.props.error && <Text>Error: {this.props.error}</Text>}
-
-      </View>
+        </KeyboardAwareScrollView>
     );
   }
 }
@@ -162,13 +199,14 @@ class Picker extends React.Component {
 
   async componentDidMount() {
     const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL, Permissions.CAMERA);
-    this.setState({ hasCameraPermission: status === 'granted' });
+    this.setState({ hasCameraPermission: status === "granted" });
   }
+
   render() {
     let { image } = this.state;
 
     return (
-      <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+      <View style={{ alignItems: "center", justifyContent: "center" }}>
         <Button
           title={(this.state.image ? "change" : "take") + " nutrition facts label photo "}
           onPress={this._pickImage}
@@ -197,11 +235,20 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingLeft: 20,
     paddingRight: 20,
+    textAlignVertical: "top",
   },
   nameInput: {
     fontSize: 25,
     marginTop: 15,
     marginBottom: 5,
+  },
+  nutritionFacts: {
+    margin: 20,
+    marginBottom: 30,
+  },
+  nutritionInput: {
+    padding: 10,
+    flex: 1,
   },
   label: {
     marginTop: 10,

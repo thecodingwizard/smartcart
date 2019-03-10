@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { StyleSheet, Text, View, ScrollView, FlatList } from 'react-native';
 import { getItemDetails } from '../../actions/items.actions';
+import NutritionFacts from "../../componnets/NutritionFacts";
 
 class ViewItemDetails extends Component {
   static navigationOptions = {
@@ -37,7 +38,7 @@ class ViewItemDetails extends Component {
       <ScrollView style={style.container}>
         {this.props.itemDetails && (
           <React.Fragment>
-            {this.props.itemDetails.nutritions && <NutritionFacts item={this.props.itemDetails} />}
+            {this.props.itemDetails.nutritions && <NutritionFacts nutritions={this.props.itemDetails.nutritions} />}
             {this.props.itemDetails.ingredients && <IngredientsList item={this.props.itemDetails} />}
             <ProConList />
             <View style={{ height: 40 }} />
@@ -78,39 +79,6 @@ const nutritions = [
   { name: 'Sugars', amount: '1g', percent: '', indented: true },
   { name: 'Protein', amount: '6g', percent: '', indented: false },
 ];
-
-const renderItem = ({ item }) => (
-  <View style={style.nutritionFactsItem}>
-    <Text
-      style={{
-        flex: 3,
-        fontWeight: '900',
-        ...(item.indented ? style.nutritionFactsUnbold : {}),
-      }}
-    >
-      {(item.indented ? '        ' : '') + item.name}
-    </Text>
-    <Text style={{ flex: 1 }}>{item.amount}</Text>
-    {/*<Text style={{ flex: 1 }}>*/}
-      {/*{item.percent.length > 0 && item.percent + '%'}*/}
-    {/*</Text>*/}
-  </View>
-);
-
-const NutritionFacts = props => (
-  <View style={style.nutritionFacts}>
-    <Text style={style.nutritionFactsTitle}>Nutrition Facts</Text>
-    <FlatList
-      data={[
-        // { name: 'Category', amount: 'Amount', percent: 'Daily ' },
-        { name: 'Category', amount: 'Amount' },
-        ...props.item.nutritions,
-      ]}
-      renderItem={renderItem}
-      keyExtractor={({ name }) => name}
-    />
-  </View>
-);
 
 const proCons = {
   pros: ['Low in fat', 'Low in sodium', 'High in Iron'],
@@ -169,24 +137,6 @@ const style = StyleSheet.create({
   ingredientsContent: {
     fontSize: 15,
     lineHeight: 20,
-  },
-  nutritionFacts: {
-    margin: 10,
-  },
-  nutritionFactsTitle: {
-    fontSize: 22,
-    marginBottom: 5,
-  },
-  nutritionFactsItem: {
-    flexDirection: 'row',
-    height: 30,
-    borderWidth: 1,
-    borderColor: 'transparent',
-    borderBottomColor: 'black',
-    paddingTop: 5,
-  },
-  nutritionFactsUnbold: {
-    fontWeight: '400',
   },
   proConList: {
     margin: 10,
