@@ -87,6 +87,18 @@ export default class Home extends Component {
             <Text style={styles.imageLabel}>Scan item</Text>
           </View>
         </TouchableHighlight>
+        <TouchableHighlight
+          underlayColor="#f0f4f7"
+          onPress={() => this.props.navigation.navigate('AddItem')}
+        >
+          <View style={styles.imageWrapper}>
+            <Image
+              style={styles.image}
+              source={require('../../assets/scanner-keyboard.png')}
+            />
+            <Text style={styles.imageLabel}>Add item</Text>
+          </View>
+        </TouchableHighlight>
       </ScrollView>
     );
   }
