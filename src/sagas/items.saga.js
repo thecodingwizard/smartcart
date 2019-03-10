@@ -1,6 +1,8 @@
 import { call, put, takeLatest, all } from "redux-saga/effects";
-import * as upcService from "../services/upc.service";
+import * as upcService from "../services/item.service";
 import * as itemsActions from "../actions/items.actions";
+import * as firebase from "firebase/app";
+import "firebase/firestore";
 
 function* getItemDetails(action) {
   try {
@@ -18,6 +20,11 @@ function* getItemDetails(action) {
 function* addItem(action) {
   // action.data = item data
   console.log(action.data);
+  firebase.firestore().collection("products").doc(action.data.upc).set({
+    category:action.data.category,
+    name:action.data.name,
+    stores:[action.data.store]
+  });
 }
 
 function* itemsSaga() {

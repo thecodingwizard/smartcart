@@ -39,7 +39,7 @@ class AddItemScreen extends Component {
     this.setState(state => ({ ...state, category }));
   };
 
-  addItem = () => {
+  addItem = (upc) => {
     if (this.state.name.length <= 0) {
       this.setState(state => ({ ...state, nameError: true }));
       return;
