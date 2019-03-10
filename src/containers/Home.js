@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { Component } from "react";
+import { Button, StyleSheet, Text, View } from "react-native";
+import { Link } from "react-router-native";
 
-export default class Home extends React.Component {
+export default class Home extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>Home</Text>
+        <Link component={Button} to="/view-item/00430999" title="Go to View Item" />
       </View>
     );
   }
