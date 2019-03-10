@@ -16,6 +16,7 @@ class ViewItemPage extends Component {
 
   render() {
     const upc = this.props.match.params.upc;
+    const type = this.props.match.params.type;
     return (
       <View>
         <Text>
