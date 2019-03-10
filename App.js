@@ -6,7 +6,7 @@ import { createStackNavigator, createAppContainer } from 'react-navigation';
 import Home from './src/containers/Home';
 import ScanItemScreen from './src/containers/scan-item/ScanItemScreen';
 import PostReview from './src/containers/post-review/PostReview';
-import ViewItemScreen from './src/containers/view-item/ViewItemScreen';
+import ViewItemNavigator from './src/containers/view-item/ViewItemNavigator';
 import AddItemScreen from './src/containers/add-item/AddItemScreen';
 import Register from './src/auth/Register';
 import configureStore from './src/store/configureStore';
@@ -17,7 +17,7 @@ import CompareItems from './src/containers/compare-items/CompareItems';
 const AppNavigator = createStackNavigator(
   {
     Home: Home,
-    ViewItem: ViewItemScreen,
+    ViewItem: ViewItemNavigator,
     ScanItem: ScanItemScreen,
     AddItem: AddItemScreen,
     CompareItems: CompareItems,

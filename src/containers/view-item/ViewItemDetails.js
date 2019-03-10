@@ -2,18 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { StyleSheet, Text, View, ScrollView, FlatList } from 'react-native';
 import { getItemDetails } from '../../actions/items.actions';
-import { HeaderTitle } from 'react-navigation';
 
-const ScreenTitle = ({ text, ...otherProps }) => (
-  <HeaderTitle {...otherProps}>{text}</HeaderTitle>
-);
-const ScreenTitleContainer = connect(state => ({
-  text: state.items.itemDetails ? state.items.itemDetails.name : 'Loading...',
-}))(ScreenTitle);
-
-class ViewItemScreen extends Component {
+class ViewItemDetails extends Component {
   static navigationOptions = {
-    headerTitle: ScreenTitleContainer,
+    title: "Product Details"
   };
 
   componentDidMount() {
@@ -222,4 +214,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(ViewItemScreen);
+export default connect(mapStateToProps)(ViewItemDetails);
