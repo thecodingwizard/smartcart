@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
 import {
   StyleSheet,
   Button,
@@ -11,7 +12,9 @@ import { ImagePicker, Permissions } from 'expo';
 
 import { Divider, Rating } from "react-native-elements";
 
-export default class AddItemScreen extends Component {
+import { addReview } from "../../actions";
+
+class AddItemScreen extends Component {
   state = {
     name: '',
     store: '0niNMGWHs1uXsi0EZqGz',
@@ -61,7 +64,14 @@ export default class AddItemScreen extends Component {
 
     if (this.state.nameError || this.state.categoryError || this.state.storeError) return;
 
-    // TODO: add review to firebase
+    this.props.dispatch(addReview({
+      // TODO
+      upcCode: "000000",
+      store: "Trader's Joe",
+      category: "beans",
+      description: "Blah blah blah",
+      rating: 4.32
+    }));
 
     // temp: alert user
     alert(
@@ -113,11 +123,20 @@ export default class AddItemScreen extends Component {
           <Button title="Add" onPress={this.addItem} />
         </View>
 
+        {this.props.loading && <Text>Loading...</Text>}
+        {this.props.error && <Text>Error: {this.props.error}</Text>}
+
       </View>
     );
   }
 }
 
+const mapStateToProps = state => ({
+  loading: state.items.loading,
+  error: state.items.error,
+});
+
+export default connect(mapStateToProps)(AddItemScreen);
 
 class Picker extends React.Component {
   state = {
