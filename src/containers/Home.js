@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { Button, StyleSheet, View } from "react-native";
+import React, { Component } from 'react';
+import { Button, StyleSheet, View } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
 
 export default class Home extends Component {
   static navigationOptions = {
-    title: "Home Screen",
+    title: 'Home Screen',
   };
 
   render() {
@@ -18,15 +18,19 @@ export default class Home extends Component {
       <View style={styles.container}>
         <Button
           title="Go to View Item"
-          onPress={() => this.props.navigation.navigate("ViewItem", {
-            upcCode: "00430999"
-          })}
+          onPress={() =>
+            this.props.navigation.navigate('ViewItem', {
+              upc: '00430999',
+            })
+          }
         />
         <Button
           title="Go to Post Review"
-          onPress={() => this.props.navigation.navigate("PostReview", {
-            upcCode: "00430999"
-          })}
+          onPress={() =>
+            this.props.navigation.navigate('PostReview', {
+              upc: '00430999',
+            })
+          }
         />
       </View>
     );
