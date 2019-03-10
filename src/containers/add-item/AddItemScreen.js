@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Button, StyleSheet, TextInput, View, Text } from "react-native";
+import { Button, StyleSheet, TextInput, View, Text, ActivityIndicator } from "react-native";
 import { ImagePicker, Permissions } from "expo";
 
 import { CheckBox, Divider } from "react-native-elements";
@@ -78,6 +78,7 @@ class AddItemScreen extends Component {
   setActivityIndicatorVisible = status => {
     if (status) {
       // show
+
     } else {
       // hide
     }
@@ -308,7 +309,10 @@ class AddItemScreen extends Component {
         <View style={{ ...styles.btnContainer }}>
           <Button title="Add" onPress={this.addItem}/>
         </View>
-
+        <ActivityIndicator
+          style={{...styles.loader}}
+          size="large" color="#0000ff"
+          animating={/*boolean here TODO */}/>
         {/*{(this.props.loading) && <Text>Loading...</Text>}
         //This is suppose to throw error? Ironically enough, it causes an error... So I deleted it for now
         {(this.props.error) && <Text>Error: </Text>}*/}
@@ -391,5 +395,14 @@ const styles = StyleSheet.create({
   },
   btnContainer: {
     marginHorizontal: 20,
+  },
+  loader:  {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
 });
