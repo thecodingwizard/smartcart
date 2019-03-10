@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet, View, Button } from 'react-native';
 import { Text } from 'react-native-elements';
 import { getItemReviews } from '../../actions';
 
@@ -25,9 +25,20 @@ class ViewItemReviews extends Component {
     }
   }
 
+  addReview = () => {
+    this.props.navigation.navigate('PostReview', {
+      upc: this.props.navigation.getParam('upc'),
+    });
+  };
+
   render() {
     if (!this.props.loading) {
-      return <ReviewList reviews={this.props.reviews} />;
+      return (
+        <View>
+          <Button title="Add Review" onPress={this.addReview} />
+          <ReviewList reviews={this.props.reviews} />
+        </View>
+      );
     } else {
       return (
         <View>
@@ -61,7 +72,9 @@ const renderItem = ({ item: review }) => (
         {review.rating + ''}/5
       </Text>
       <Text style={{ flex: 1, fontSize: 18 }}>
-        {isNaN(Number(review.price)) || '$' + Number(review.price).toFixed(2)}
+        {isNaN(Number(review.price))
+          ? ''
+          : '$' + Number(review.price).toFixed(2)}
       </Text>
     </View>
     <Text style={{ fontSize: 16, marginBottom: 5 }}>{review.description}</Text>
