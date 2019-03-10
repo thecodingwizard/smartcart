@@ -17,7 +17,7 @@ function* getItemDetails(action) {
   }
 }
 
-function* addItem(action) {
+function addItem(action) {
   // action.data = item data
   firebase.firestore().collection("products").doc(action.data.upc).set({
     category:action.data.category,

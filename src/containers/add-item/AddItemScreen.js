@@ -14,6 +14,7 @@ import { CheckBox, Divider } from 'react-native-elements';
 import NutritionFacts from '../../componnets/NutritionFacts';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { addItem } from '../../actions';
+import * as firebase from "firebase/app";
 
 class AddItemScreen extends Component {
   state = {
@@ -185,15 +186,12 @@ class AddItemScreen extends Component {
     )
       return;
 
-    this.props.dispatch(
-      addItem({
-        upcCode: this.props.navigation.getParam('upc'),
-        name: this.state.name,
-        category: this.state.category,
-        ingredients: this.state.ingredients,
-        nMap: this.state.nMap,
-      })
-    );
+    firebase.firestore().collection('products').doc(this.props.navigation.getParam('upc')).set({
+      category: this.state.category,
+      name: this.state.name,
+      nutritions: [this.state.nMap],
+      ingredients: this.state.ingredients,
+    });
 
     // navigate back to home
     this.props.navigation.navigate('Home');
@@ -211,7 +209,7 @@ class AddItemScreen extends Component {
           placeholder="Item name"
           onChangeText={this.updateName}
         />
-        <Divider />
+        <Divider/>
         <TextInput
           style={{
             ...styles.input,
@@ -219,7 +217,7 @@ class AddItemScreen extends Component {
           placeholder="Item category"
           onChangeText={this.updateCategory}
         />
-        <Divider />
+        <Divider/>
         {/*TODO*/}
         {/*<TextInput*/}
         {/*style={{*/}
@@ -240,7 +238,7 @@ class AddItemScreen extends Component {
           numberOfLines={3}
           onChangeText={this.updateIngredients}
         />
-        <Divider />
+        <Divider/>
         <View style={{ ...styles.nutritionFacts }}>
           <NutritionFacts
             nutritions={
@@ -398,11 +396,11 @@ class AddItemScreen extends Component {
             />
           </View>
         </View>
-        <Divider />
-        <Picker onImageSelected={this.updateImageSelected} />
-        <Divider />
+        <Divider/>
+        <Picker onImageSelected={this.updateImageSelected}/>
+        <Divider/>
         <View style={{ ...styles.btnContainer }}>
-          <Button title="Add" onPress={this.addItem} />
+          <Button title="Add" onPress={this.addItem}/>
         </View>
         <ActivityIndicator
           style={{
@@ -437,7 +435,7 @@ class Picker extends React.Component {
   async componentDidMount() {
     const { status } = await Permissions.askAsync(
       Permissions.CAMERA_ROLL,
-      Permissions.CAMERA
+      Permissions.CAMERA,
     );
     this.setState({ hasCameraPermission: status === 'granted' });
   }
