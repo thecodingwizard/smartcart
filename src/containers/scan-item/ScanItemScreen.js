@@ -71,11 +71,17 @@ const styles = StyleSheet.create({
   },
   imageWrapper: {
     alignItems: 'center',
+    justifyContent: "center",
+    position: "absolute",
+    zIndex: 10,
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
   },
   image: {
     width: 250,
     height: 250,
-    top: 110,
   },
   backgroundContainer: {
     position: 'absolute',
