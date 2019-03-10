@@ -18,6 +18,7 @@ export default class PostReview extends Component {
     review: 4.3,
     nameError: false,
     priceError: false,
+    upcCode: ""
   };
 
   static navigationOptions = {
@@ -70,7 +71,8 @@ export default class PostReview extends Component {
     firebase.firestore().collection("review").doc(this.state.name).set({
       name: this.state.name,
       price: this.state.price,
-      rating: this.state.review
+      rating: this.state.review,
+      upcCode: this.state.upcCode
     }).then(() => this.addDocCallback()).catch(() => alert("Sorry, there was an error."));
 
 
@@ -79,7 +81,7 @@ export default class PostReview extends Component {
   };
 
   render() {
-    const upc = this.props.navigation.getParam('upc');
+    this.state.upcCode = this.props.navigation.getParam('upc');
     return (
       <View>
         <TextInput
@@ -100,7 +102,7 @@ export default class PostReview extends Component {
           onChangeText={this.updatePrice}
         />
         <Divider />
-        <Text style={styles.upc}>UPC code: {upc}</Text>
+        <Text style={styles.upc}>UPC code: {this.state.upcCode}</Text>
         <Rating
           showRating
           fractions={1}
