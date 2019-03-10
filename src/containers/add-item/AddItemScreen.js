@@ -7,6 +7,7 @@ import {
   TextInput,
   Slider,
 } from 'react-native';
+import { ImagePicker, Permissions } from 'expo';
 
 import { Divider, Rating } from "react-native-elements";
 
@@ -37,21 +38,18 @@ export default class AddItemScreen extends Component {
 
   addItem = () => {
     if (this.state.name.length <= 0) {
-      alert("name Err")
       this.setState(state => ({ ...state, nameError: true }));
       return;
     } else {
       this.setState(state => ({ ...state, nameError: false }));
     }
     if (this.state.store.length <= 0) {
-      alert("store Err")
       this.setState(state => ({ ...state, storeError: true }));
       return;
     } else {
       this.setState(state => ({ ...state, storeError: false }));
     }
     if (this.state.category.length <= 0) {
-      alert("cat Err")
       this.setState(state => ({ ...state, categoryError: true }));
       return;
     } else {
@@ -108,12 +106,53 @@ export default class AddItemScreen extends Component {
           onChangeText={this.updateStore}
         />
         <Divider />
+        <Picker />
+        <Divider />
         <View style={{ ...styles.btnContainer }}>
           <Button title="Add" onPress={this.addItem} />
         </View>
+
       </View>
     );
   }
+}
+
+
+class Picker extends React.Component {
+  state = {
+    image: null,
+    hasCameraPermission: null,
+  };
+
+  async componentDidMount() {
+    const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL, Permissions.CAMERA);
+    this.setState({ hasCameraPermission: status === 'granted' });
+  }
+  render() {
+    let { image } = this.state;
+
+    return (
+      <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+        <Button
+          title={(this.state.image ? "change" : "take") + " nutrition facts label photo "}
+          onPress={this._pickImage}
+        />
+      </View>
+    );
+  }
+
+  _pickImage = async () => {
+    let result = await ImagePicker.launchCameraAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      this.setState({ image: result.uri });
+    }
+  };
 }
 
 const styles = StyleSheet.create({

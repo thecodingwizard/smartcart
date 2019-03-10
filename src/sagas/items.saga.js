@@ -20,5 +20,4 @@ function* itemsSaga() {
     takeLatest(itemsActions.GET_ITEM_DETAILS, getItemDetails),
   ]);
 }
-
 export default itemsSaga;
