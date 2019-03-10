@@ -12,7 +12,6 @@ import Register from './src/auth/Register';
 import configureStore from './src/store/configureStore';
 import './src/services/firebase-init';
 import SignInPage from "./src/auth/SignInPage";
-import AddItem from "./src/containers/add-item/AddItem";
 
 const AppNavigator = createStackNavigator(
   {
