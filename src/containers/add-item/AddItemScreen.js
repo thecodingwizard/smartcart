@@ -13,6 +13,7 @@ import { ImagePicker, Permissions } from 'expo';
 import { CheckBox, Divider } from 'react-native-elements';
 import NutritionFacts from '../../componnets/NutritionFacts';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { addItem } from '../../actions';
 
 class AddItemScreen extends Component {
   state = {
@@ -57,6 +58,36 @@ class AddItemScreen extends Component {
   updateCategory = category => {
     this.setState(state => ({ ...state, category }));
   };
+  // updateCalories = val => {
+  //   this.setState(state => ({ ...state, nMap:{...state.nMap, "calories":val }}));
+  // }
+  // updateTotalFat = val => {
+  //   this.setState(state => ({ ...state, nMap:{...state.nMap, "totalFat":val } }));
+  // }
+  // updateSaturatedFat = val => {
+  //   this.setState(state => ({ ...state, nMap:{...state.nMap, "saturatedFat":val } }));
+  // }
+  // updateTransFat = val => {
+  //   this.setState(state => ({ ...state, nMap:{...state.nMap, "transFat":val } }));
+  // }
+  // updateCholesterol = val => {
+  //   this.setState(state => ({ ...state, nMap:{...state.nMap, "cholesterol":val } }));
+  // }
+  // updateSodium = val => {
+  //   this.setState(state => ({ ...state, nMap:{...state.nMap, "sodium":val } }));
+  // }
+  // updateTotalCarbohydrate = val => {
+  //   this.setState(state => ({ ...state, nMap:{...state.nMap, "totalCarbohydrate":val } }));
+  // }
+  // updateDietaryFiber = val => {
+  //   this.setState(state => ({ ...state, nMap:{...state.nMap, "dietaryFiber":val } }));
+  // }
+  // updateSugars = val => {
+  //   this.setState(state => ({ ...state, nMap:{...state.nMap, "sugars":val } }));
+  // }
+  // updateProtein = val => {
+  //   this.setState(state => ({ ...state, nMap:{...state.nMap, "protein":val } }));
+  // }
   updateImageSelected = image => {
     this.setState(state => ({ ...state, image }));
     this.setActivityIndicatorVisible(true);
@@ -156,12 +187,10 @@ class AddItemScreen extends Component {
 
     this.props.dispatch(
       addItem({
-        // TODO: rating
         upcCode: this.props.navigation.getParam('upc'),
         name: this.state.name,
         category: this.state.category,
-        store: this.state.store,
-        rating: 4.32,
+        ingredients: this.state.ingredients,
         nMap: this.state.nMap,
       })
     );
