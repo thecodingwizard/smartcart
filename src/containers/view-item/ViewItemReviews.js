@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Text } from "react-native-elements";
 import { getItemReviews } from "../../actions";
+import { Image, TouchableHighlight, View } from 'react-native';
 
 class ViewItemReviews extends Component {
   static navigationOptions = {
@@ -26,12 +27,21 @@ class ViewItemReviews extends Component {
 
   render() {
     return (
-      <Text>
-        UPC Code: {this.props.navigation.getParam("upc")}
-        Reviews: {JSON.stringify(this.props.reviews)}
-        {this.props.loading && "Loading"}
-        {this.props.error && "Error: " + this.props.error}
-      </Text>
+      <>
+        <TouchableHighlight
+          underlayColor="#f0f4f7"
+          onPress={() => this.props.navigation.navigate('CompareItems')}
+        >
+
+            <Text>compare items test</Text>
+        </TouchableHighlight>
+        <Text>
+          UPC Code: {this.props.navigation.getParam("upc")}
+          Reviews: {JSON.stringify(this.props.reviews)}
+          {this.props.loading && "Loading"}
+          {this.props.error && "Error: " + this.props.error}
+        </Text>
+      </>
     )
   }
 }
