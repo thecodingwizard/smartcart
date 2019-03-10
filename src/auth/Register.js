@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {StyleSheet, TextInput, View, Button, Text} from "react-native";
 
-export default class RegisterMod extends Component {
+export default class Register extends Component {
   render() {
     return (
         <View>
@@ -26,21 +26,51 @@ class Register extends Component {
       emailTaken: false
     };
   }
+  async checkUsername(username) {
+    // Check username
 
+
+  }
   register = () => {
-    this.setState(state => ({...state, wrongPassword: false}));
-    this.setState(state => ({...state, usernameTaken: false}));
-    this.setState(state => ({...state, emailTaken: false}));
+
+    this.setState(state => ({...state,
+      wrongPassword: false, usernameTaken: false, emailTaken: false}));
     if (this.state.password !== this.state.confirmPassword) {
       this.setState(state => ({...state, wrongPassword: true}));
-    } else if (false) {
-      // Place condition for username taken in place of 'false'
-      this.setState(state => ({...state, usernameTaken: true}));
-    } else if (false) {
-      // Place condition for email taken in place of 'false'
-      this.setState(state => ({...state, emailTaken: true}));
     } else {
-      alert("Signed in!");
+      firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // ...
+        switch (error.code) {
+          case "auth/email-already-in-use":
+            this.setState(state => ({ ...state, emailTaken: true }));
+          break;
+          case "auth/email-invalid":
+            // Email invalid below
+
+
+          break;
+          case "auth/weak-password":
+            // Weak password below
+
+
+          break;
+          default:
+            // Unknown error occurred. Please try again later
+
+
+          break;
+
+        }
+      }).then(async function () {
+        if (await this.checkUsername(this.state.userName)) {
+          this.setState(state => ({ ...state, usernameTaken: true }));
+        } else {
+          alert("Account created")
+        }
+      });
     }
   };
 
