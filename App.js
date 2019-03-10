@@ -7,7 +7,7 @@ import { Link, NativeRouter, Route, Switch } from "react-router-native";
 import Home from "./src/containers/Home";
 import ScanItem from "./src/containers/scan-item/ScanItem";
 import PostReview from "./src/containers/post-review/PostReview";
-import ViewItem from "./src/containers/view-item/ViewItem";
+import ViewItem from "./src/containers/view-item/ViewItemPage";
 import ViewList from "./src/containers/view-item/ViewList";
 
 import configureStore from "./src/store/configureStore";
