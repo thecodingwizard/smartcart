@@ -22,7 +22,8 @@ function* addItem(action) {
   firebase.firestore().collection("products").doc(action.data.upc).set({
     category:action.data.category,
     name:action.data.name,
-    stores:[action.data.store]
+    nutritions:[action.data.nMap],
+    ingredients: action.data.ingredients,
   });
 }
 
