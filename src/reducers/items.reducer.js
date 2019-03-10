@@ -35,6 +35,21 @@ const itemsReducer = (state = initialState, action) => {
         error: null,
         notFound: true
       };
+    case fromActions.ADD_ITEM:
+      return {
+        ...state,
+        loading: true,
+      };
+    case fromActions.ADD_ITEM_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+      };
+    case fromActions.ADD_ITEM_ERROR:
+      return {
+        ...state,
+        loading: false,
+      };
     default: {
       return state;
     }

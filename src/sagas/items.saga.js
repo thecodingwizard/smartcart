@@ -15,9 +15,15 @@ function* getItemDetails(action) {
   }
 }
 
+function* addItem(action) {
+  // action.data = item data
+  
+}
+
 function* itemsSaga() {
   yield all([
     takeLatest(itemsActions.GET_ITEM_DETAILS, getItemDetails),
+    takeLatest(itemsActions.ADD_ITEM, addItem),
   ]);
 }
 export default itemsSaga;
