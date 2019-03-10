@@ -7,16 +7,6 @@ const WEAK_PSW = 2;
 const UNKNOWN = 3;
 
 export default class Register extends Component {
-  render() {
-    return (
-        <View>
-          <Register/>
-        </View>
-    );
-  }
-}
-
-class Register extends Component {
 
   constructor(props) {
     super(props);
@@ -27,7 +17,7 @@ class Register extends Component {
       userName: "",
       password: "",
       confirmPassword: "",
-      errorCode: -1;
+      errorCode: -1
     };
   }
   async checkUsername(username) {
@@ -61,7 +51,7 @@ class Register extends Component {
         if (await this.checkUsername(this.state.userName)) {
           this.setState(state => ({ ...state, usernameTaken: true }));
         } else {
-          alert("Account created")
+          this.props.goBack();
         }
       });
     }
@@ -123,6 +113,14 @@ class Register extends Component {
                 title="Register"
             />
           </View>
+          <View style={style.buttonStyle}>
+            <Button
+                title="Back"
+                onPress={() =>
+                    this.props.navigation.navigate('SignInPage')
+                }
+            />
+          </View>
           {this.checkError()}
         </View>
     )
@@ -141,6 +139,7 @@ const style = StyleSheet.create({
     padding: 5,
     margin: 5
   }, buttonStyle: {
+    margin: 5,
     height: 40,
     width: 350
   }, textStyle: {
