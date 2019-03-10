@@ -7,6 +7,7 @@ import { CheckBox, Divider } from "react-native-elements";
 
 import { addItem } from "../../actions";
 import NutritionFacts from "../../componnets/NutritionFacts";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 class AddItemScreen extends Component {
   state = {
@@ -98,7 +99,7 @@ class AddItemScreen extends Component {
   render() {
     const upc = this.props.navigation.getParam("upc");
     return (
-      <ScrollView>
+      <KeyboardAwareScrollView enableOnAndroid>
         <TextInput
           style={{
             ...styles.input,
@@ -170,9 +171,7 @@ class AddItemScreen extends Component {
 
         {this.props.loading && <Text>Loading...</Text>}
         {this.props.error && <Text>Error: {this.props.error}</Text>}
-
-        <View style={{ paddingBottom: 250 }} />
-      </ScrollView>
+        </KeyboardAwareScrollView>
     );
   }
 }

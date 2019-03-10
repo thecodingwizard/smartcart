@@ -61,7 +61,7 @@ export default class PostReview extends Component {
         name: this.state.name,
         description: this.state.description,
         rating: this.state.review
-      }).then((ref) {
+      }).then((ref) => {
         this.addDocCallback();
     });
 
