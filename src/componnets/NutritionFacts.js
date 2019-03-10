@@ -26,7 +26,7 @@ const NutritionFacts = props => (
       data={[
         // { name: 'Category', amount: 'Amount', percent: 'Daily ' },
         { name: 'Category', amount: 'Amount' },
-        ...props.item.nutritions,
+        ...props.nutritions,
       ]}
       renderItem={renderItem}
       keyExtractor={({ name }) => name}

@@ -38,7 +38,7 @@ class ViewItemDetails extends Component {
       <ScrollView style={style.container}>
         {this.props.itemDetails && (
           <React.Fragment>
-            {this.props.itemDetails.nutritions && <NutritionFacts item={this.props.itemDetails} />}
+            {this.props.itemDetails.nutritions && <NutritionFacts nutritions={this.props.itemDetails.nutritions} />}
             {this.props.itemDetails.ingredients && <IngredientsList item={this.props.itemDetails} />}
             <ProConList />
             <View style={{ height: 40 }} />

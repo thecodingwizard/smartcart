@@ -1,36 +1,31 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import { connect } from "react-redux";
-import {
-  StyleSheet,
-  Button,
-  View,
-  Text,
-  TextInput,
-  Slider, ScrollView,
-} from "react-native";
-import { ImagePicker, Permissions } from 'expo';
+import { Button, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
+import { ImagePicker, Permissions } from "expo";
 
-import { Divider, Rating } from "react-native-elements";
+import { CheckBox, Divider } from "react-native-elements";
 
 import { addItem } from "../../actions";
+import NutritionFacts from "../../componnets/NutritionFacts";
 
 class AddItemScreen extends Component {
   state = {
-    name: '',
-    store: '0niNMGWHs1uXsi0EZqGz',
-    category:'',
+    name: "",
+    store: "0niNMGWHs1uXsi0EZqGz",
+    category: "",
     nameError: false,
     priceError: false,
     categoryError: false,
     storeError: false,
     ingredients: "",
-    nutritions: [
-      { name: 'Calories', amount: '100', indented: false },
-    ]
+    nutritions: [],
+    nutritionName: "",
+    nutritionAmount: "",
+    indented: false,
   };
 
   static navigationOptions = {
-    title: 'Add Item',
+    title: "Add Item",
   };
 
   updateName = name => {
@@ -67,28 +62,41 @@ class AddItemScreen extends Component {
     }
 
 
-
-
     if (this.state.nameError || this.state.categoryError || this.state.storeError) return;
 
     this.props.dispatch(addItem({
       // TODO: rating
-      upcCode: this.props.navigation.getParam('upc'),
+      upcCode: this.props.navigation.getParam("upc"),
       name: this.state.name,
       category: this.state.category,
       store: this.state.store,
       ingredients: this.state.ingredients,
-      rating: 4.32
+      rating: 4.32,
     }));
 
 
-
     // navigate back to home
-    this.props.navigation.navigate('Home');
+    this.props.navigation.navigate("Home");
+  };
+
+  addNutritionField = () => {
+    let updatedNutritions = this.state.nutritions;
+    updatedNutritions.push({
+      name: this.state.nutritionName,
+      amount: this.state.nutritionAmount,
+      indented: this.state.indented,
+    });
+
+    this.setState({
+      nutritions: updatedNutritions,
+      nutritionName: "",
+      nutritionAmount: "",
+      indented: false,
+    });
   };
 
   render() {
-    const upc = this.props.navigation.getParam('upc');
+    const upc = this.props.navigation.getParam("upc");
     return (
       <ScrollView>
         <TextInput
@@ -99,7 +107,7 @@ class AddItemScreen extends Component {
           placeholder="Item name"
           onChangeText={this.updateName}
         />
-        <Divider />
+        <Divider/>
         <TextInput
           style={{
             ...styles.input,
@@ -107,16 +115,16 @@ class AddItemScreen extends Component {
           placeholder="Item category"
           onChangeText={this.updateCategory}
         />
-        <Divider />
+        <Divider/>
         {/*TODO*/}
         {/*<TextInput*/}
-          {/*style={{*/}
-            {/*...styles.input,*/}
-          {/*}}*/}
-          {/*placeholder="Item store"*/}
-          {/*value="0niNMGWHs1uXsi0EZqGz"*/}
-          {/*readonly*/}
-          {/*onChangeText={this.updateStore}*/}
+        {/*style={{*/}
+        {/*...styles.input,*/}
+        {/*}}*/}
+        {/*placeholder="Item store"*/}
+        {/*value="0niNMGWHs1uXsi0EZqGz"*/}
+        {/*readonly*/}
+        {/*onChangeText={this.updateStore}*/}
         {/*/>*/}
         {/*<Divider />*/}
         <TextInput
@@ -128,16 +136,42 @@ class AddItemScreen extends Component {
           numberOfLines={3}
           onChangeText={this.updateIngredients}
         />
-        <Divider />
-        <Picker />
-        <Divider />
+        <Divider/>
+        <View style={{ ...styles.nutritionFacts }}>
+          <NutritionFacts nutritions={this.state.nutritions}/>
+          <View style={{ flexDirection: "row" }}>
+            <TextInput
+              placeholder="Category"
+              style={{ ...styles.nutritionInput }}
+              value={this.state.nutritionName}
+              onChangeText={category => this.setState({ nutritionName: category })}/>
+            <TextInput
+              placeholder="Amount"
+              style={{ ...styles.nutritionInput }}
+              value={this.state.nutritionAmount}
+              onChangeText={amount => this.setState({ nutritionAmount: amount })}/>
+          </View>
+          <View>
+            <CheckBox
+              title="Indented"
+              checked={this.state.indented}
+              onPress={() => this.setState(state => ({ indented: !state.indented }))}/>
+          </View>
+          <View style={{ flexDirection: "row", justifyContent: "center" }}>
+            <Button title="Add Field" onPress={this.addNutritionField}/>
+          </View>
+        </View>
+        <Divider/>
+        <Picker/>
+        <Divider/>
         <View style={{ ...styles.btnContainer }}>
-          <Button title="Add" onPress={this.addItem} />
+          <Button title="Add" onPress={this.addItem}/>
         </View>
 
         {this.props.loading && <Text>Loading...</Text>}
         {this.props.error && <Text>Error: {this.props.error}</Text>}
 
+        <View style={{ paddingBottom: 250 }} />
       </ScrollView>
     );
   }
@@ -158,13 +192,14 @@ class Picker extends React.Component {
 
   async componentDidMount() {
     const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL, Permissions.CAMERA);
-    this.setState({ hasCameraPermission: status === 'granted' });
+    this.setState({ hasCameraPermission: status === "granted" });
   }
+
   render() {
     let { image } = this.state;
 
     return (
-      <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+      <View style={{ alignItems: "center", justifyContent: "center" }}>
         <Button
           title={(this.state.image ? "change" : "take") + " nutrition facts label photo "}
           onPress={this._pickImage}
@@ -198,6 +233,14 @@ const styles = StyleSheet.create({
     fontSize: 25,
     marginTop: 15,
     marginBottom: 5,
+  },
+  nutritionFacts: {
+    margin: 20,
+    marginBottom: 30,
+  },
+  nutritionInput: {
+    padding: 10,
+    flex: 1,
   },
   label: {
     marginTop: 10,
