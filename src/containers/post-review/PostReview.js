@@ -28,8 +28,8 @@ export default class PostReview extends Component {
   updateName = name => {
     this.setState(state => ({ ...state, name }));
   };
-  updatePrice = price => {
-    this.setState(state => ({ ...state, price }));
+  updateDescription = description => {
+    this.setState(state => ({ ...state, description }));
   };
   updateReview = review => {
     this.setState(state => ({ ...state, review }));
@@ -50,32 +50,18 @@ export default class PostReview extends Component {
     } else {
       this.setState(state => ({ ...state, nameError: false }));
     }
-    if (this.state.price.length <= 0) {
-      this.setState(state => ({ ...state, priceError: true }));
-      return;
-    } else {
-      this.setState(state => ({ ...state, priceError: false }));
-    }
 
-    // check that price is valid
-    const price = Number(this.state.price);
-    if (isNaN(price)) {
-      this.setState(state => ({ ...state, priceError: true }));
-      return;
-    } else {
-      this.setState(state => ({ ...state, priceError: false }));
-    }
 
-    if (this.state.priceError || this.state.nameError) {
+    if (this.state.nameError) {
       return;
     }
     firebase.firestore()
       .collection("review").doc(this.state.upcCode)
       .collection("reviews").add({
         name: this.state.name,
-        description: "^^^ that's what she said",
+        description: this.state.description,
         rating: this.state.review
-      }).then(function(ref) {
+      }).then((ref) {
         this.addDocCallback();
     });
 
@@ -102,9 +88,9 @@ export default class PostReview extends Component {
           style={{
             ...styles.input,
           }}
-          placeholder="Item price"
-          keyboardType="decimal-pad"
-          onChangeText={this.updatePrice}
+          placeholder="Description"
+          multiline
+          onChangeText={this.updateDescription}
         />
         <Divider />
         <Text style={styles.upc}>UPC code: {this.state.upcCode}</Text>
