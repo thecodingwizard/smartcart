@@ -4,10 +4,8 @@ import { View, Text } from "react-native";
 import { getItemDetails } from "../../actions/items.actions";
 
 class ViewItemPage extends Component {
-  componentDidUpdate(prevProps) {
-    if (this.props.match.params.upc !== prevProps.match.params.upc) {
-      this.getItemDetails();
-    }
+  componentDidMount() {
+    this.props.dispatch(getItemDetails(this.props.match.params.upc));
   }
 
   render() {
@@ -17,6 +15,8 @@ class ViewItemPage extends Component {
         <Text>
           View Item UPC code: {upc}
         </Text>
+        {this.props.loading && <Text>Loading...</Text>}
+        {this.props.error && <Text>Error: {this.props.error}</Text>}
       </View>
     )
   }
@@ -24,8 +24,10 @@ class ViewItemPage extends Component {
 
 const mapStateToProps = state => {
   return {
-    itemDetails: state.itemDetails,
+    itemDetails: state.items.itemDetails,
+    loading: state.items.loading,
+    error: state.items.error,
   };
 };
 
-export default connect(mapStateToProps, { getItemDetails })(ViewItemPage);
+export default connect(mapStateToProps)(ViewItemPage);
