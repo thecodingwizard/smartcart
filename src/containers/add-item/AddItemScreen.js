@@ -12,7 +12,7 @@ import { ImagePicker, Permissions } from 'expo';
 
 import { Divider, Rating } from "react-native-elements";
 
-import { addReview } from "../../actions";
+import { addItem } from "../../actions";
 
 class AddItemScreen extends Component {
   state = {
@@ -64,7 +64,7 @@ class AddItemScreen extends Component {
 
     if (this.state.nameError || this.state.categoryError || this.state.storeError) return;
 
-    this.props.dispatch(addReview({
+    this.props.dispatch(addItem({
       // TODO: rating
       upcCode: this.props.navigation.getParam('upc'),
       name: this.state.name,

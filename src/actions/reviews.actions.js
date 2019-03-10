@@ -22,3 +22,28 @@ export function getItemReviewsFail(error) {
     error
   };
 }
+
+
+// RIP not enough time; this is unused
+export const ADD_ITEM_REVIEW = "[Reviews] Add Item Reviews";
+export const ADD_ITEM_REVIEW_SUCCESS = "[Reviews] Add Item Reviews Success";
+export const ADD_ITEM_REVIEW_FAIL = "[Reviews] Add Item Reviews Fail";
+
+export function addItemReview(upcCode, data) {
+  return {
+    type: ADD_ITEM_REVIEW,
+    upcCode, data
+  };
+}
+
+export function addItemReviewSuccess() {
+  return {
+    type: ADD_ITEM_REVIEW_SUCCESS
+  };
+}
+
+export function addItemReviewFail() {
+  return {
+    type: ADD_ITEM_REVIEW_FAIL
+  };
+}
