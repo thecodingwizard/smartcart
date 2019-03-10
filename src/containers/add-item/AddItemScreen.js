@@ -187,7 +187,6 @@ class AddItemScreen extends Component {
           numberOfLines={3}
           onChangeText={this.updateIngredients}
         />
-
         <Divider/>
         <View style={{ ...styles.nutritionFacts }}>
           <NutritionFacts nutritions={[/* Nothing (intentional) */]}/>

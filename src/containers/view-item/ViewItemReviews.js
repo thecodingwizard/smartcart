@@ -34,7 +34,7 @@ class ViewItemReviews extends Component {
   render() {
     if (!this.props.loading) {
       return (
-        <View>
+        <View style={{ paddingTop: 10 }}>
           <Button title="Add Review" onPress={this.addReview} />
           <ReviewList reviews={this.props.reviews} />
         </View>
@@ -59,24 +59,16 @@ const renderItem = ({ item: review }) => (
       borderWidth: 1,
     }}
   >
-    <View style={{ flexDirection: 'row' }}>
-      <Text
-        style={{
-          flex: 1,
-          fontSize: 16,
-          fontWeight: '700',
-          fontSize: 20,
-          marginBottom: 5,
-        }}
-      >
-        {review.rating + ''}/5
-      </Text>
-      <Text style={{ flex: 1, fontSize: 18 }}>
-        {isNaN(Number(review.price))
-          ? ''
-          : '$' + Number(review.price).toFixed(2)}
-      </Text>
-    </View>
+    <Text
+      style={{
+        fontSize: 16,
+        fontWeight: '700',
+        fontSize: 20,
+        marginBottom: 5,
+      }}
+    >
+      {review.rating + ''}/5
+    </Text>
     <Text style={{ fontSize: 16, marginBottom: 5 }}>{review.description}</Text>
   </View>
 );
