@@ -23,7 +23,10 @@ class AddItemScreen extends Component {
     priceError: false,
     categoryError: false,
     storeError: false,
-    ingredients: ""
+    ingredients: "",
+    nutritions: [
+      { name: 'Calories', amount: '100', indented: false },
+    ]
   };
 
   static navigationOptions = {
