@@ -13,10 +13,8 @@ import * as firebase from 'firebase';
 
 export default class PostReview extends Component {
   state = {
-    name: '',
     price: '',
-    review: 4.3,
-    nameError: false,
+    review: 4,
     priceError: false,
     upcCode: '',
   };
@@ -25,9 +23,6 @@ export default class PostReview extends Component {
     title: 'Add Review',
   };
 
-  updateName = name => {
-    this.setState(state => ({ ...state, name }));
-  };
   updateDescription = description => {
     this.setState(state => ({ ...state, description }));
   };
@@ -36,35 +31,20 @@ export default class PostReview extends Component {
   };
 
   addDocCallback() {
-    alert(
-      `Added review titled "${this.state.name}" with a review of ${
-        this.state.review
-      }/5`
-    );
     this.props.navigation.replace('Home');
   }
 
   addReview = () => {
-    if (this.state.name.length <= 0) {
-      this.setState(state => ({ ...state, nameError: true }));
-      return;
-    } else {
-      this.setState(state => ({ ...state, nameError: false }));
-    }
-
-    if (this.state.nameError) {
-      return;
-    }
     firebase
       .firestore()
       .collection('review')
       .doc(this.state.upcCode)
       .collection('reviews')
       .add({
-        name: this.state.name,
         description: this.state.description,
-        rating: this.state.review
-      }).then((ref) => {
+        rating: this.state.review,
+      })
+      .then(ref => {
         this.addDocCallback();
       });
 
@@ -76,42 +56,29 @@ export default class PostReview extends Component {
     this.state.upcCode = this.props.navigation.getParam('upc');
     return (
       <View>
-        <TextInput
-          style={{
-            ...styles.input,
-            ...styles.nameInput,
-          }}
-          placeholder="Item name"
-          onChangeText={this.updateName}
-        />
-        <Divider />
-        <TextInput
-          style={{
-            ...styles.input,
-          }}
-          placeholder="Description"
-          multiline
-          onChangeText={this.updateDescription}
-        />
-        <Divider />
-        <Text style={styles.upc}>UPC code: {this.state.upcCode}</Text>
         <Rating
           showRating
           fractions={1}
           startingValue={this.state.review}
           onFinishRating={this.updateReview}
           style={{
-            marginBottom: 30,
+            margin: 20,
           }}
         />
+        <Divider />
+        <TextInput
+          style={{
+            ...styles.input,
+            height: 100,
+          }}
+          placeholder="Review"
+          multiline
+          onChangeText={this.updateDescription}
+        />
+        <Divider />
         <View style={{ ...styles.btnContainer }}>
           <Button title="Add" onPress={this.addReview} />
         </View>
-        {this.state.nameError && (
-          <Text style={styles.textStyle}>
-            Sorry. There was an error with the product name.
-          </Text>
-        )}
         {this.state.priceError && (
           <Text style={styles.textStyle}>
             Sorry. There was an error with the price.
@@ -129,14 +96,11 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
   },
   input: {
-    padding: 10,
+    fontSize: 16,
+    paddingTop: 10,
+    paddingBottom: 10,
     paddingLeft: 20,
     paddingRight: 20,
-  },
-  nameInput: {
-    fontSize: 25,
-    marginTop: 15,
-    marginBottom: 5,
   },
   label: {
     marginTop: 10,
