@@ -4,5 +4,7 @@ import * as firebase from "firebase/app";
 import "firebase/firestore";
 
 export async function getItemReviews(upcCode) {
-  // TODO @jeffrey
+  firebase.firestore().collection("reviews").doc(upcCode).get().then(await function (res) {
+    return res.data();
+  })
 }
