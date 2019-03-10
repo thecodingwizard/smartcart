@@ -39,7 +39,7 @@ export default class PostReview extends Component {
   };
 
   render() {
-    const upc = this.props.navigation.state.params.upc;
+    const upc = this.props.navigation.getParam('upc');
     return (
       <View style={styles.container}>
         <Text style={styles.title}>UPC code: {upc}</Text>

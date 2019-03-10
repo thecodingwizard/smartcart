@@ -1,33 +1,37 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { Text, View } from "react-native";
-import { getItemDetails } from "../../actions/items.actions";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Text, View } from 'react-native';
+import { getItemDetails } from '../../actions/items.actions';
 
 class ViewItemScreen extends Component {
   static navigationOptions = {
-    title: "View Item Screen",
+    title: 'View Item Screen',
   };
 
   componentDidMount() {
-    const upc = this.props.navigation.getParam("upcCode");
+    const upc = this.props.navigation.getParam('upc');
     this.props.dispatch(getItemDetails(upc));
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.navigation.getParam("upcCode") !== prevProps.navigation.getParam("upcCode")) {
-      this.props.dispatch(getItemDetails(this.props.navigation.getParam("upcCode")));
+    if (
+      this.props.navigation.getParam('upc') !==
+      prevProps.navigation.getParam('upc')
+    ) {
+      this.props.dispatch(
+        getItemDetails(this.props.navigation.getParam('upc'))
+      );
     }
-  };
+  }
 
   render() {
     const { navigation } = this.props;
-    const upc = navigation.getParam("upcCode");
+    const upc = navigation.getParam('upc');
     return (
       <View>
-        {
-          this.props.itemDetails &&
+        {this.props.itemDetails && (
           <Text>Item Details: {JSON.stringify(this.props.itemDetails)}</Text>
-        }
+        )}
         {this.props.loading && <Text>Loading...</Text>}
         {this.props.error && <Text>Error: {this.props.error}</Text>}
       </View>
