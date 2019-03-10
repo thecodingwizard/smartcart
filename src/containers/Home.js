@@ -1,16 +1,5 @@
 import React, { Component } from "react";
-import { Button, StyleSheet, Text, View } from "react-native";
-import { Link } from "react-router-native";
-
-export default class Home extends Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Link component={Button} to="/view-item/00430999" title="Go to View Item" />
-      </View>
-    );
-  }
-}
+import { Button, StyleSheet, View } from "react-native";
 
 const styles = StyleSheet.create({
   container: {
@@ -18,3 +7,28 @@ const styles = StyleSheet.create({
     padding: 10,
   },
 });
+
+export default class Home extends Component {
+  static navigationOptions = {
+    title: "Home Screen",
+  };
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <Button
+          title="Go to View Item"
+          onPress={() => this.props.navigation.navigate("ViewItem", {
+            upcCode: "00430999"
+          })}
+        />
+        <Button
+          title="Go to Post Review"
+          onPress={() => this.props.navigation.navigate("PostReview", {
+            upcCode: "00430999"
+          })}
+        />
+      </View>
+    );
+  }
+}

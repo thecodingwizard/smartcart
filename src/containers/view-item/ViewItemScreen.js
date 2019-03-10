@@ -3,20 +3,25 @@ import { connect } from "react-redux";
 import { Text, View } from "react-native";
 import { getItemDetails } from "../../actions/items.actions";
 
-class ViewItemPage extends Component {
+class ViewItemScreen extends Component {
+  static navigationOptions = {
+    title: "View Item Screen",
+  };
+
   componentDidMount() {
-    this.props.dispatch(getItemDetails(this.props.match.params.upc));
+    const upc = this.props.navigation.getParam("upcCode");
+    this.props.dispatch(getItemDetails(upc));
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.match.params.upc !== prevProps.match.params.upc) {
-      this.props.dispatch(getItemDetails(this.props.match.params.upc));
+    if (this.props.navigation.getParam("upcCode") !== prevProps.navigation.getParam("upcCode")) {
+      this.props.dispatch(getItemDetails(this.props.navigation.getParam("upcCode")));
     }
   };
 
   render() {
-    const upc = this.props.match.params.upc;
-    const type = this.props.match.params.type;
+    const { navigation } = this.props;
+    const upc = navigation.getParam("upcCode");
     return (
       <View>
         {
@@ -38,4 +43,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(ViewItemPage);
+export default connect(mapStateToProps)(ViewItemScreen);

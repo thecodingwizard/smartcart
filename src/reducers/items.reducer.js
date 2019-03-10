@@ -12,6 +12,7 @@ const itemsReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: true,
+        itemDetails: null,
       };
     case fromActions.GET_ITEM_DETAILS_SUCCESS:
       return {
