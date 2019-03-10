@@ -19,6 +19,7 @@ class AddItemScreen extends Component {
     name: '',
     store: '0niNMGWHs1uXsi0EZqGz',
     category:'',
+    image:null,
     nameError: false,
     priceError: false,
     categoryError: false,
@@ -38,7 +39,9 @@ class AddItemScreen extends Component {
   updateCategory = category => {
     this.setState(state => ({ ...state, category }));
   };
-
+  updateImageSelected = image => {
+    this.setState(state => ({...state, image}))
+  }
   addItem = (upc) => {
     if (this.state.name.length <= 0) {
       this.setState(state => ({ ...state, nameError: true }));
@@ -64,19 +67,37 @@ class AddItemScreen extends Component {
 
     if (this.state.nameError || this.state.categoryError || this.state.storeError) return;
 
-    this.props.dispatch(addItem({
-      // TODO: rating
-      upcCode: this.props.navigation.getParam('upc'),
-      name: this.state.name,
-      category: this.state.category,
-      store: this.state.store,
-      rating: 4.32
-    }));
 
+    console.log(this.state.image);
+    var formData = new FormData();
+    formData.append("IMAGE", this.state.image);
+    fetch('http://35.235.77.103:8000/nutritionExtract/', {
+      method: 'post',
+      headers:{
+        'Content-Type': 'multipart/form-data'
+      },
+      body:formData
+    }).then(function(response) {
+      console.log(response);
+      console.log("ji");
+      return response.json();
+    }).then(function(data) {
+      console.log(data);
+    });
 
-
-    // navigate back to home
-    this.props.navigation.navigate('Home');
+    // this.props.dispatch(addItem({
+    //   // TODO: rating
+    //   upcCode: this.props.navigation.getParam('upc'),
+    //   name: this.state.name,
+    //   category: this.state.category,
+    //   store: this.state.store,
+    //   rating: 4.32
+    // }));
+    //
+    //
+    //
+    // // navigate back to home
+    // this.props.navigation.navigate('Home');
   };
 
   render() {
@@ -110,7 +131,9 @@ class AddItemScreen extends Component {
           onChangeText={this.updateStore}
         />
         <Divider />
-        <Picker />
+        <Picker
+          onImageSelected={this.updateImageSelected}
+        />
         <Divider />
         <View style={{ ...styles.btnContainer }}>
           <Button title="Add" onPress={this.addItem} />
@@ -159,6 +182,7 @@ class Picker extends React.Component {
 
     if (!result.cancelled) {
       this.setState({ image: result.uri });
+      this.props.onImageSelected(result.uri);
     }
   };
 }
