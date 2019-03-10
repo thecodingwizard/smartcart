@@ -7,7 +7,8 @@ import {
   TextInput,
   Slider,
 } from 'react-native';
-import { Rating } from 'react-native-elements';
+
+import { Divider, Rating } from "react-native-elements";
 
 export default class PostReview extends Component {
   state = {
@@ -72,54 +73,63 @@ export default class PostReview extends Component {
   render() {
     const upc = this.props.navigation.getParam('upc');
     return (
-      <View style={styles.container}>
-        <Text style={styles.title}>UPC code: {upc}</Text>
+      <View>
         <TextInput
           style={{
             ...styles.input,
-            ...(this.state.nameError ? styles.inputError : {}),
+            ...styles.nameInput,
           }}
           placeholder="Item name"
           onChangeText={this.updateName}
         />
+        <Divider />
         <TextInput
           style={{
             ...styles.input,
-            ...(this.state.priceError ? styles.inputError : {}),
           }}
           placeholder="Item price"
           keyboardType="decimal-pad"
           onChangeText={this.updatePrice}
         />
+        <Divider />
+        <Text style={styles.upc}>UPC code: {upc}</Text>
         <Rating
           showRating
           fractions={1}
           startingValue={this.state.review}
           onFinishRating={this.updateReview}
+          style={{
+            marginBottom: 30,
+          }}
         />
-        <Button title="Add" onPress={this.addReview} />
+        <View style={{ ...styles.btnContainer }}>
+          <Button title="Add" onPress={this.addReview} />
+        </View>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 10,
-  },
-  title: {
-    fontSize: 20,
+  upc: {
+    // fontSize: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 15,
   },
   input: {
-    marginTop: 10,
     padding: 10,
-    borderWidth: 1,
-    borderRadius: 10,
+    paddingLeft: 20,
+    paddingRight: 20,
   },
-  inputError: {
-    borderColor: 'red',
+  nameInput: {
+    fontSize: 25,
+    marginTop: 15,
+    marginBottom: 5,
   },
   label: {
     marginTop: 10,
+  },
+  btnContainer: {
+    marginHorizontal: 20,
   },
 });
