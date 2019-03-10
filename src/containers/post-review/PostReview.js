@@ -7,7 +7,7 @@ import {
   TextInput,
   Slider,
 } from 'react-native';
-import { Rating, AirbnbRating } from 'react-native-elements';
+import { Rating } from 'react-native-elements';
 
 export default class PostReview extends Component {
   state = {
