@@ -31,7 +31,9 @@ class ViewItemScreen extends Component {
     }
 
     if (this.props.notFound && !prevProps.notFound) {
-      this.props.navigation.navigate("AddItem");
+      this.props.navigation.navigate("AddItem", {
+        upc: this.props.navigation.getParam("upc")
+      });
     }
   }
 
