@@ -1,7 +1,14 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
-import { FlatList, StyleSheet, Text, View, Button } from 'react-native';
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  TouchableOpacity,
+} from 'react-native';
 
 const products = firebase.firestore().collection('products');
 
@@ -56,6 +63,11 @@ export default class CompareItems extends Component {
                 })
               }
             />
+            <TouchableOpacity disabled={true}>
+              <Text style={style.disabledButton}>
+                Scan barcode of second item
+              </Text>
+            </TouchableOpacity>
           </View>
         );
       } else if (secondItem.length === 0) {
@@ -202,7 +214,12 @@ const style = StyleSheet.create({
     textAlign: 'center',
     textAlignVertical: 'center',
     width: '100%',
-    margin: 10,
+    margin: 5,
     fontSize: 30,
+  },
+  disabledButton: {
+    marginTop: 10,
+    fontSize: 17,
+    color: 'gray',
   },
 });
