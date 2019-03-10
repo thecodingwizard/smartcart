@@ -1,20 +1,18 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Button, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
+import { Button, StyleSheet, TextInput, View } from "react-native";
 import { ImagePicker, Permissions } from "expo";
 
 import { CheckBox, Divider } from "react-native-elements";
-
-import { addItem } from "../../actions";
 import NutritionFacts from "../../componnets/NutritionFacts";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 class AddItemScreen extends Component {
   state = {
-    name: '',
-    store: '0niNMGWHs1uXsi0EZqGz',
-    category:'',
-    image:null,
+    name: "",
+    store: "0niNMGWHs1uXsi0EZqGz",
+    category: "",
+    image: null,
     nameError: false,
     priceError: false,
     categoryError: false,
@@ -40,51 +38,43 @@ class AddItemScreen extends Component {
     this.setState(state => ({ ...state, category }));
   };
   updateImageSelected = image => {
-    this.setState(state => ({...state, image}))
-  }
+    this.setState(state => ({ ...state, image }));
+  };
 
   updateIngredients = ingredients => {
     this.setState({ ingredients });
   };
 
   addItem = (upc) => {
-    if (this.state.name.length <= 0) {
-      this.setState(state => ({ ...state, nameError: true }));
-      return;
-    } else {
-      this.setState(state => ({ ...state, nameError: false }));
-    }
-    if (this.state.store.length <= 0) {
-      this.setState(state => ({ ...state, storeError: true }));
-      return;
-    } else {
-      this.setState(state => ({ ...state, storeError: false }));
-    }
-    if (this.state.category.length <= 0) {
-      this.setState(state => ({ ...state, categoryError: true }));
-      return;
-    } else {
-      this.setState(state => ({ ...state, categoryError: false }));
-    }
+    // if (this.state.name.length <= 0) {
+    //   this.setState(state => ({ ...state, nameError: true }));
+    //   return;
+    // } else {
+    //   this.setState(state => ({ ...state, nameError: false }));
+    // }
+    // if (this.state.store.length <= 0) {
+    //   this.setState(state => ({ ...state, storeError: true }));
+    //   return;
+    // } else {
+    //   this.setState(state => ({ ...state, storeError: false }));
+    // }
+    // if (this.state.category.length <= 0) {
+    //   this.setState(state => ({ ...state, categoryError: true }));
+    //   return;
+    // } else {
+    //   this.setState(state => ({ ...state, categoryError: false }));
+    // }
+    //
+    //
+    // if (this.state.nameError || this.state.categoryError || this.state.storeError) return;
 
-
-    if (this.state.nameError || this.state.categoryError || this.state.storeError) return;
-
-    console.log(this.state.image);
-    var formData = new FormData();
-    formData.append("IMAGE",
-      this.state.image);
+    // console.log(this.state.image);
+    let formData = new FormData();
+    formData.append("image", this.state.image);
     fetch('http://35.235.77.103:8000/nutritionExtract/', {
-      method: 'post',
-      headers:{
-        'Process-Data': false, // essential
-        'Content-Type': false,
-        'Encoding-Type': 'multipart/form-data'
-      },
-      body:formData
+      method: 'POST',
+      body: formData
     }).then(function(response) {
-      console.log(response);
-      console.log("ji");
       return response.json();
     }).then(function(data) {
       console.log(data);
@@ -171,7 +161,8 @@ class AddItemScreen extends Component {
           </View>
           <View style={{ flexDirection: "row", justifyContent: "center" }}>
             {/*//This button used to call 'addNutritionField', but that's gone now? Putting placeholder for now*/}
-            <Button title="Add Field" onPress={() => {}}/>
+            <Button title="Add Field" onPress={() => {
+            }}/>
           </View>
         </View>
         <Divider/>
@@ -185,7 +176,7 @@ class AddItemScreen extends Component {
         {/*{(this.props.loading) && <Text>Loading...</Text>}
         //This is suppose to throw error? Ironically enough, it causes an error... So I deleted it for now
         {(this.props.error) && <Text>Error: </Text>}*/}
-        </KeyboardAwareScrollView>
+      </KeyboardAwareScrollView>
     );
   }
 }
@@ -222,11 +213,13 @@ class Picker extends React.Component {
   }
 
   _pickImage = async () => {
-    let result = await ImagePicker.launchCameraAsync();
+    let result = await ImagePicker.launchCameraAsync({
+      base64: true
+    });
 
     if (!result.cancelled) {
       this.setState({ image: result.uri });
-      this.props.onImageSelected(result.uri);
+      this.props.onImageSelected(result.base64);
     }
   };
 }
