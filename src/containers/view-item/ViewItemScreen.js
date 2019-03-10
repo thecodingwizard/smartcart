@@ -5,7 +5,7 @@ import { getItemDetails } from "../../actions/items.actions";
 
 const ScreenTitle = props => <Text>{props.text}</Text>;
 const ScreenTitleContainer = connect(state => ({
-  text: "Loading..."
+  text: state.items.itemDetails ? state.items.itemDetails.name : "Loading..."
 }))(ScreenTitle);
 
 class ViewItemScreen extends Component {
