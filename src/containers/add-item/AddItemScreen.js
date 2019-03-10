@@ -74,6 +74,7 @@ class AddItemScreen extends Component {
       name: this.state.name,
       category: this.state.category,
       store: this.state.store,
+      ingredients: this.state.ingredients,
       rating: 4.32
     }));
 
