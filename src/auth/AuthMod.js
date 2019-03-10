@@ -25,11 +25,7 @@ class Auth extends Component {
     alert('Signed In!\n' +
         'Username: ' + this.state.userText + '\n' +
         'Password: ' + this.state.passwordText);
-  }
-
-  onTouch() {
-
-  }
+  };
 
   render() {
     return (
