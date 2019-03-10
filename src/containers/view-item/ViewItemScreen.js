@@ -3,9 +3,14 @@ import { connect } from "react-redux";
 import { StyleSheet, Text, View } from "react-native";
 import { getItemDetails } from "../../actions/items.actions";
 
+const ScreenTitle = props => <Text>{props.text}</Text>;
+const ScreenTitleContainer = connect(state => ({
+  text: "Loading..."
+}))(ScreenTitle);
+
 class ViewItemScreen extends Component {
   static navigationOptions = {
-    title: "View Item Screen",
+    title: <ScreenTitleContainer />,
   };
 
   componentDidMount() {
