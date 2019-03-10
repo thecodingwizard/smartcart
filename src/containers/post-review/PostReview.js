@@ -48,7 +48,7 @@ export default class PostReview extends Component {
 
     // check that price is valid
     const price = Number(this.state.price);
-    if (price === NaN) {
+    if (isNaN(price)) {
       this.setState(state => ({ ...state, priceError: true }));
       return;
     } else {
@@ -57,7 +57,9 @@ export default class PostReview extends Component {
 
     if (this.state.priceError || this.state.nameError) return;
 
-    // add review to firebase
+    // TODO: add review to firebase
+
+    // temp: alert user
     alert(
       `Added review of ${this.state.name} with price ` +
         `of $${price} and a review of ${this.state.review}/5`
