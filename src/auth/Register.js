@@ -1,6 +1,11 @@
 import React, {Component} from "react";
 import {StyleSheet, TextInput, View, Button, Text} from "react-native";
 
+const EMAIL_USED = 0;
+const INVALID_EMAIL = 1;
+const WEAK_PSW = 2;
+const UNKNOWN = 3;
+
 export default class Register extends Component {
   render() {
     return (
@@ -12,6 +17,7 @@ export default class Register extends Component {
 }
 
 class Register extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -21,9 +27,7 @@ class Register extends Component {
       userName: "",
       password: "",
       confirmPassword: "",
-      wrongPassword: false,
-      usernameTaken: false,
-      emailTaken: false
+      errorCode: -1;
     };
   }
   async checkUsername(username) {
@@ -32,9 +36,7 @@ class Register extends Component {
 
   }
   register = () => {
-
-    this.setState(state => ({...state,
-      wrongPassword: false, usernameTaken: false, emailTaken: false}));
+    this.setState(state => ({...state, errorCode: -1}));
     if (this.state.password !== this.state.confirmPassword) {
       this.setState(state => ({...state, wrongPassword: true}));
     } else {
@@ -42,22 +44,16 @@ class Register extends Component {
 
         switch (error.code) {
           case "auth/email-already-in-use":
-            this.setState(state => ({ ...state, emailTaken: true }));
+            this.setState(state => ({...state, errorCode: EMAIL_USED}));
           break;
           case "auth/email-invalid":
-            // Email invalid below
-
-
+            this.setState(state => ({...state, errorCode: INVALID_EMAIL}));
           break;
           case "auth/weak-password":
-            // Weak password below
-
-
+            this.setState(state => ({...state, errorCode: WEAK_PSW}));
           break;
           default:
-            // Unknown error occurred. Please try again later
-
-
+            this.setState(state => ({...state, errorCode, UNKNOWN}));
           break;
 
         }
@@ -70,6 +66,23 @@ class Register extends Component {
       });
     }
   };
+
+  checkError() {
+    if (this.state.errorCode !== -1) {
+      switch(this.state.errorCode) {
+        case EMAIL_USED:
+          return <Text style={style.TextBoxStyle}>Sorry. This email has already been taken.</Text>
+        case INVALID_EMAIL:
+          return <Text style={style.TextBoxStyle}>Sorry. This email is invalid.</Text>
+        case WEAK_PSW:
+          return <Text style={style.TextBoxStyle}>Sorry. This password is too weak.</Text>
+        default:
+          return <Text style={style.TextBoxStyle}>Sorry. An unknown error occured.</Text>
+      }
+    } else {
+      return null;
+    }
+  }
 
   render() {
     return (
@@ -110,12 +123,7 @@ class Register extends Component {
                 title="Register"
             />
           </View>
-          {(this.state.wrongPassword) &&
-          <Text style={style.textStyle}>Sorry, passwords do not match.</Text>}
-          {(this.state.usernameTaken) &&
-          <Text style={style.textStyle}>Sorry, this username is taken.</Text>}
-          {(this.state.emailTaken) &&
-          <Text style={style.textStyle}>Sorry, this email has been taken.</Text>}
+          {this.checkError()}
         </View>
     )
   }
@@ -139,3 +147,4 @@ const style = StyleSheet.create({
     color: "black"
   }
 });
+
