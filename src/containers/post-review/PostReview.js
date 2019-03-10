@@ -105,6 +105,10 @@ export default class PostReview extends Component {
         <View style={{ ...styles.btnContainer }}>
           <Button title="Add" onPress={this.addReview} />
         </View>
+        {(this.state.nameError) &&
+        <Text>Sorry. There was an error with the product name.</Text>}
+        {(this.state.priceError) &&
+        <Text>Sorry. There was an error with the price.</Text>}
       </View>
     );
   }

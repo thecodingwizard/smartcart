@@ -5,7 +5,7 @@ import * as itemsActions from "../actions/items.actions";
 function* getItemDetails(action) {
   try {
     const response = yield call(upcService.getUPCItem, action.upcCode);
-    if (response === null) {
+    if (response === undefined) {
       yield put(itemsActions.getItemNotFound());
     } else {
       yield put(itemsActions.getItemDetailsSuccess(response));
